@@ -1,0 +1,25 @@
+/* layout */
+
+.dp-wrapper {
+  display: grid;
+  min-height: 100vh;
+  grid-template-columns: 1fr;
+  grid-template-rows: auto 1fr;
+}
+
+#root {
+  background-color: #f1f1f1;
+  grid-row-start: 2;
+  grid-column: 1;
+  overflow: hidden;
+}
+
+/* These lines are needed to override the fixed heights of Unlayer that generate unnecessary scrolling. */
+
+#root main > div {
+  min-height: calc(90vh - 80px);
+}
+
+#root main > div > div {
+  min-height: 100% !important;
+}

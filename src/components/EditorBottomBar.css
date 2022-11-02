@@ -1,0 +1,8 @@
+/* CTA Footer */
+
+.ed-cta-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 18px 12px 12px 18px;
+}

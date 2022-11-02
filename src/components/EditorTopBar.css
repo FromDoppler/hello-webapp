@@ -1,0 +1,20 @@
+.editor-top-bar {
+  padding: 12px;
+}
+.ed-header-list {
+  display: flex;
+  align-items: center;
+}
+
+.ed-header-list li {
+  margin-right: 12px;
+}
+
+.dp-library .ed-header-list h2 {
+  padding-bottom: 0;
+}
+
+.ed-header-list li:last-child {
+  margin-left: auto;
+  margin-right: 0;
+}

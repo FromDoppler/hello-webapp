@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#000000" />
+    <meta
+      name="description"
+      content="Web site created using create-react-app"
+    />
+    <title>Demo</title>
+  </head>
+  <body>
+    <noscript>You need to enable JavaScript to run this app.</noscript>
+    <div class="dp-library dp-wrapper">
+      <div id="root"></div>
+    </div>
+    <script src="https://cdn.fromdoppler.com/mfe-loader/loader-v2.0.0.js"></script>
+    <script type="text/javascript">
+      // # Region Style-Guide
+      parseMicroFrontendHref(
+        location.href,
+        "doppler-style-guide",
+        "ds",
+        "main",
+        "",
+        true,
+        function (parsed) {
+          assetServices.load({ manifestURL: parsed.manifestUrl });
+        }
+      );
+      // # End region Style-Guide
+
+      // # Region Doppler Session Micro-Frontend
+      parseMicroFrontendHref(
+        location.href,
+        "doppler-session-mfe",
+        "dsm",
+        "main",
+        "",
+        true,
+        function (parsed) {
+          window["doppler-session-mfe-configuration"] = {
+            dopplerLegacyBaseUrl: "https://appint.fromdoppler.com",
+            useDummies: parsed.useDummies,
+          };
+
+          assetServices.load({ manifestURL: parsed.manifestUrl });
+        }
+      );
+      // # End region Doppler Session
+
+      // # Region Editor
+      parseMicroFrontendHref(
+        location.href,
+        "hello-webapp",
+        "ew",
+        "main",
+        "",
+        true,
+        function (parsed) {
+          window["hello-webapp-configuration"] = {
+            basename: "hello",
+            useDummies: parsed.useDummies,
+          };
+
+          assetServices.load({ manifestURL: parsed.manifestUrl });
+        }
+      );
+      // # End region Editor
+
+      function parseMicroFrontendHref(
+        href,
+        pkgName,
+        prefix,
+        defaultVersion,
+        defaultCommitId,
+        avoidCacheDefault,
+        action
+      ) {
+        const cdnBaseUrl = "https://cdn.fromdoppler.com";
+
+        const versionParamRegex = new RegExp(
+          "\\?(?:.+&)*" +
+            prefix +
+            "_version=((?:(?:main)|(?:INT)|(?:pr-\\d+)|(?:v\\d+(?:\\.\\d+){0,2})))" +
+            "(?:-([a-f\\d]{40}))?" +
+            "(?:&.*)?$"
+        );
+        const versionParamRegexResult = href.match(versionParamRegex);
+        const version = versionParamRegexResult
+          ? versionParamRegexResult[1]
+          : defaultVersion;
+        const commitId =
+          (versionParamRegexResult && versionParamRegexResult[2]) ||
+          defaultCommitId;
+
+        const avoidCacheParamRegex = new RegExp(
+          "\\?(?:.+&)*" + prefix + "_nocache=((?:true)|(?:false))(?:&.*)?$"
+        );
+        const avoidCacheParamRegexResult = href.match(avoidCacheParamRegex);
+        const avoidCache = avoidCacheParamRegexResult
+          ? avoidCacheParamRegexResult[1] == "true"
+          : avoidCacheDefault;
+
+        const useDummiesParamRegex = new RegExp(
+          "\\?(?:.+&)*" + prefix + "_dummy=((?:true)|(?:false))(?:&.*)?$"
+        );
+        const useDummiesParamRegexResult = href.match(useDummiesParamRegex);
+        const useDummiesDefault = false;
+        const useDummies = useDummiesParamRegexResult
+          ? useDummiesParamRegexResult[1] == "true"
+          : useDummiesDefault;
+
+        const manifestUrl =
+          cdnBaseUrl +
+          "/" +
+          pkgName +
+          "/asset-manifest-" +
+          version +
+          (!commitId ? "" : "-" + commitId) +
+          ".json" +
+          (!avoidCache ? "" : "?s=" + Date.now());
+
+        action({
+          useDummies: useDummies,
+          manifestUrl: manifestUrl,
+        });
+      }
+    </script>
+  </body>
+</html>
