@@ -73,7 +73,7 @@ Context.
 ```
 
 Then, [`AppServices`](./src/abstractions/services.ts) will be injected in the desired components using
-`InjectAppServices` HOC or `useAppServices` hook:
+`injectAppServices` HOC or `useAppServices` hook:
 
 ![resolve app-services sequence diagram](./docs/resolve-app-services.png)
 
@@ -86,7 +86,7 @@ Then, [`AppServices`](./src/abstractions/services.ts) will be injected in the de
     participant implementations
 
     index_tsx->>+components: render
-    components->>+AppServicesProvider: InjectAppServices / useAppServices
+    components->>+AppServicesProvider: injectAppServices / useAppServices
     AppServicesProvider->>+AppServicesContext: AppServicesContext.Consumer
     AppServicesContext-->>-AppServicesProvider: appServices
     AppServicesProvider-->>-components: appServices
@@ -181,7 +181,7 @@ This configuration object will be merged with the [`defaultAppConfiguration`](./
 Example of a configuration injected into a component:
 
 ```typescript
-export const DemoComponent = InjectAppServices(
+export const DemoComponent = injectAppServices(
   ({ appServices: { appConfiguration } }: AppServices) => (
     <code>
       <pre>{JSON.stringify(appConfiguration)}</pre>

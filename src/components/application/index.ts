@@ -1,6 +1,6 @@
 export { AppServicesProvider } from "./AppServicesProvider";
 export { AppSessionStateProvider } from "./AppSessionStateProvider";
-export { InjectAppServices } from "./InjectAppServices";
+export { injectAppServices } from "./injectAppServices";
 export { useAppServices } from "./useAppServices";
 export { useAppSessionUserData } from "./useAppSessionUserData";
 export { RequireAuth } from "./RequireAuth";

@@ -1,7 +1,7 @@
 import { AppServices } from "../../abstractions/application";
 import { AppServicesContext } from "./AppServicesContext";
 
-export function InjectAppServices<
+export function injectAppServices<
   T extends { appServices: Partial<AppServices> }
 >(Component: (props1: T) => JSX.Element) {
   // TODO: Use the right type for in the return props parameter

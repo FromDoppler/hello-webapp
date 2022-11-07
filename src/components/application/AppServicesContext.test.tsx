@@ -1,5 +1,5 @@
 import { render, screen } from "@testing-library/react";
-import { AppServicesProvider, InjectAppServices, useAppServices } from ".";
+import { AppServicesProvider, injectAppServices, useAppServices } from ".";
 import { AppConfiguration, AppServices } from "../../abstractions/application";
 import { AppConfigurationRendererImplementation } from "../../implementations/AppConfigurationRendererImplementation";
 import {
@@ -39,8 +39,8 @@ const buildTestScenario = () => {
   };
 };
 
-describe(InjectAppServices.name, () => {
-  const HocInjectedDemoComponent = InjectAppServices(
+describe(injectAppServices.name, () => {
+  const HocInjectedDemoComponent = injectAppServices(
     ({
       appServices: { appConfigurationRenderer },
     }: {
