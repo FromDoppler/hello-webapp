@@ -15,10 +15,14 @@ jest.mock("./LoadingScreen", () => ({
 const dopplerLegacyBaseUrl = "http://dopplerlegacybaseurl";
 const baseAppServices = {
   appSessionStateAccessor: {
-    getCurrentSessionState: () => ({
+    getSessionUserData: () => ({
       status: "authenticated",
-      jwtToken: "jwtToken",
       dopplerAccountName: "dopplerAccountName",
+    }),
+    getSessionAuthData: () => ({
+      status: "authenticated",
+      dopplerAccountName: "dopplerAccountName",
+      jwtToken: "jwtToken",
     }),
   },
   appConfiguration: {

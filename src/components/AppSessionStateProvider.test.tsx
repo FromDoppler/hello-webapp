@@ -1,36 +1,36 @@
 import { act, render } from "@testing-library/react";
 import {
   AppSessionStateProvider,
-  useAppSessionState,
+  useAppSessionUserData,
 } from "./AppSessionStateContext";
 import { AppServicesProvider } from "./AppServicesContext";
 import { AppServices } from "../abstractions";
-import { AppSessionState } from "../abstractions/app-session";
 import {
-  DopplerSessionMfeAppSessionStateAccessor,
-  DopplerSessionMfeAppSessionStateMonitor,
-} from "../implementations/app-session/doppler-mfe-app-session-state-monitor";
+  AppSessionStateAccessor,
+  AppSessionStateMonitor,
+  AppSessionUserData,
+} from "../abstractions/app-session";
+import { SessionMfeAppSessionStateClient } from "../implementations/app-session/doppler-mfe-app-session-state-monitor";
 
 const expectedLang = "en";
-const UNKNOWN_SESSION: AppSessionState = {
+const UNKNOWN_SESSION: AppSessionUserData = {
   status: "unknown",
 };
-const NON_AUTHENTICATED: AppSessionState = {
+const NON_AUTHENTICATED: AppSessionUserData = {
   status: "non-authenticated",
 };
-const AUTHENTICATED: AppSessionState = {
+const AUTHENTICATED: AppSessionUserData = {
   lang: expectedLang,
   status: "authenticated",
-  jwtToken: "jwt",
   dopplerAccountName: "doppler_mock@mail.com",
 };
 
 describe("AppSessionStateProvider", () => {
-  it("should update sessionState when 1st event comes after full rendering", () => {
+  it("should update sessionUserData when 1st event comes after full rendering", () => {
     const {
       startMonitoringSessionState,
       TestComponent,
-      inspectCurrentSessionState,
+      inspectCurrentSessionUserData,
       simulateSessionUpdate,
     } = createTestContext();
 
@@ -38,29 +38,31 @@ describe("AppSessionStateProvider", () => {
 
     render(<TestComponent />);
 
-    expect(inspectCurrentSessionState()).toEqual(UNKNOWN_SESSION);
+    expect(inspectCurrentSessionUserData()).toEqual(UNKNOWN_SESSION);
     act(() => {
       simulateSessionUpdate(NON_AUTHENTICATED);
     });
-    expect(inspectCurrentSessionState()).toEqual(NON_AUTHENTICATED);
+    expect(inspectCurrentSessionUserData()).toEqual(NON_AUTHENTICATED);
 
     act(() => {
       simulateSessionUpdate(AUTHENTICATED);
     });
-    expect(inspectCurrentSessionState().jwtToken).toBeUndefined();
-    expect(inspectCurrentSessionState().status).toEqual(AUTHENTICATED.status);
-    expect(inspectCurrentSessionState().lang).toEqual(AUTHENTICATED.lang);
+    expect(inspectCurrentSessionUserData().jwtToken).toBeUndefined();
+    expect(inspectCurrentSessionUserData().status).toEqual(
+      AUTHENTICATED.status
+    );
+    expect(inspectCurrentSessionUserData().lang).toEqual(AUTHENTICATED.lang);
   });
 
   it("should update sessionState when 1st event comes after render but before useEffect", () => {
     const {
       startMonitoringSessionState,
       TestComponent,
-      inspectCurrentSessionState,
+      inspectCurrentSessionUserData,
       simulateSessionUpdate,
     } = createTestContext();
 
-    expect(inspectCurrentSessionState()).toBeUndefined();
+    expect(inspectCurrentSessionUserData()).toBeUndefined();
 
     startMonitoringSessionState();
 
@@ -76,15 +78,17 @@ describe("AppSessionStateProvider", () => {
       </>
     );
 
-    expect(inspectCurrentSessionState().status).toEqual(AUTHENTICATED.status);
-    expect(inspectCurrentSessionState().lang).toEqual(AUTHENTICATED.lang);
+    expect(inspectCurrentSessionUserData().status).toEqual(
+      AUTHENTICATED.status
+    );
+    expect(inspectCurrentSessionUserData().lang).toEqual(AUTHENTICATED.lang);
   });
 
-  it("should update sessionState when 1st event comes before rendering", () => {
+  it("should update sessionUserData when 1st event comes before rendering", () => {
     const {
       startMonitoringSessionState,
       TestComponent,
-      inspectCurrentSessionState,
+      inspectCurrentSessionUserData,
       simulateSessionUpdate,
     } = createTestContext();
 
@@ -93,8 +97,10 @@ describe("AppSessionStateProvider", () => {
     startMonitoringSessionState();
 
     const ComponentToInjectCodeBeforeTestComponentUseEffect = () => {
-      expect(inspectCurrentSessionState().status).toEqual(AUTHENTICATED.status);
-      expect(inspectCurrentSessionState().lang).toEqual(AUTHENTICATED.lang);
+      expect(inspectCurrentSessionUserData().status).toEqual(
+        AUTHENTICATED.status
+      );
+      expect(inspectCurrentSessionUserData().lang).toEqual(AUTHENTICATED.lang);
       return <></>;
     };
 
@@ -119,26 +125,23 @@ function createTestContext() {
     windowEventListener();
   };
 
-  const appSessionStateAccessor = new DopplerSessionMfeAppSessionStateAccessor({
-    window: windowDouble,
-  });
-  const appSessionStateMonitor = new DopplerSessionMfeAppSessionStateMonitor({
+  const appSessionStateClient = new SessionMfeAppSessionStateClient({
     window: windowDouble,
   });
 
   const appServices: AppServices = {
-    appSessionStateMonitor,
-    appSessionStateAccessor,
-  } as unknown as AppServices;
+    appSessionStateAccessor: appSessionStateClient as AppSessionStateAccessor,
+    appSessionStateMonitor: appSessionStateClient as AppSessionStateMonitor,
+  } as AppServices;
 
-  let currentStateSession: any;
-  const inspectCurrentSessionState = () => currentStateSession;
+  let currentSessionUserData: any;
+  const inspectCurrentSessionUserData = () => currentSessionUserData;
   const ChildrenComponent = () => {
-    currentStateSession = useAppSessionState();
+    currentSessionUserData = useAppSessionUserData();
     return <></>;
   };
 
-  const startMonitoringSessionState = () => appSessionStateMonitor.start();
+  const startMonitoringSessionState = () => appSessionStateClient.start();
   const TestComponent = () => (
     <AppServicesProvider appServices={appServices}>
       <AppSessionStateProvider>
@@ -150,7 +153,7 @@ function createTestContext() {
   return {
     startMonitoringSessionState,
     TestComponent,
-    inspectCurrentSessionState,
+    inspectCurrentSessionUserData,
     simulateSessionUpdate,
   };
 }

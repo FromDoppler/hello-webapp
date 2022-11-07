@@ -17,7 +17,8 @@ const notFoundContent = "There's nothing here!";
 
 const baseAppServices = {
   appSessionStateAccessor: {
-    getCurrentSessionState: () => ({}),
+    getSessionUserData: () => ({}),
+    getSessionAuthData: () => ({}),
   },
   appConfiguration: {},
   dopplerRestApiClient: {

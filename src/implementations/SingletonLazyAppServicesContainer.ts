@@ -1,4 +1,5 @@
 import { AppServices } from "../abstractions";
+import { AppSessionStateAccessor } from "../abstractions/app-session";
 
 export type ServicesFactories = {
   [Property in keyof AppServices as `${string & Property}Factory`]: (

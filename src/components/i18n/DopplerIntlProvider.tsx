@@ -3,7 +3,7 @@ import { IntlProvider } from "react-intl";
 import { messages_en } from "./en";
 import { messages_es } from "./es";
 import { flattenMessages, sanitizeLanguageOrDefault } from "./utils";
-import { useAppSessionState } from "../AppSessionStateContext";
+import { useAppSessionUserData } from "../AppSessionStateContext";
 import { useSearchParams } from "react-router-dom";
 
 const messages = {
@@ -17,7 +17,7 @@ interface DopplerIntlProviderProps {
 
 export const DopplerIntlProvider = ({ children }: DopplerIntlProviderProps) => {
   const [searchParams] = useSearchParams();
-  const appSessionState = useAppSessionState();
+  const sessionUserData = useAppSessionUserData();
   const [locale, setLocale] = useState("es");
 
   const langQueryParam = searchParams.get("lang");
@@ -28,14 +28,14 @@ export const DopplerIntlProvider = ({ children }: DopplerIntlProviderProps) => {
         sanitizeLanguageOrDefault(langQueryParam, Object.keys(messages))
       );
     } else if (
-      appSessionState.status === "authenticated" &&
-      appSessionState.lang
+      sessionUserData.status === "authenticated" &&
+      sessionUserData.lang
     ) {
       setLocale(
-        sanitizeLanguageOrDefault(appSessionState.lang, Object.keys(messages))
+        sanitizeLanguageOrDefault(sessionUserData.lang, Object.keys(messages))
       );
     }
-  }, [appSessionState, langQueryParam]);
+  }, [sessionUserData, langQueryParam]);
 
   return (
     <IntlProvider

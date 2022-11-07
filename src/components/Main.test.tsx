@@ -9,7 +9,8 @@ import { TestDopplerIntlProvider } from "./i18n/TestDopplerIntlProvider";
 
 const baseAppServices = {
   appSessionStateAccessor: {
-    getCurrentSessionState: () => ({}),
+    getSessionUserData: () => ({}),
+    getSessionAuthData: () => ({}),
   },
   appConfiguration: {},
   dopplerRestApiClient: {
