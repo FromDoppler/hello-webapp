@@ -7,19 +7,18 @@ export const SessionDemo = () => {
     <>
       <code>
         <pre>
-          SessionStateStatus from context: {sessionUserData.status}
+          SessionStateStatus from sessionUserData: {sessionUserData.status}
           <br />
-          UserData from context: {JSON.stringify(sessionUserData)}
+          UserData from context: {JSON.stringify(sessionUserData, null, " ")}
           <br />
           AuthData from AppServices:{" "}
-          {JSON.stringify(appSessionStateAccessor.getSessionAuthData())}
+          {JSON.stringify(
+            appSessionStateAccessor.getSessionAuthData(),
+            null,
+            " "
+          )}
         </pre>
       </code>
-      <p>
-        SessionState from AppServices could be not rendered updated because
-        React does not know when it changes. If we need updated in a React
-        component, we can use <code>AppSessionUserData()</code>
-      </p>
     </>
   );
 };
