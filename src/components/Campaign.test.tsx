@@ -237,94 +237,19 @@ describe(Campaign.name, () => {
     });
   });
 
-  it.each([
-    {
-      buttonText: "continue",
-      searchParams: "redirectedFromSummary=true",
-      urlExpected: `${dopplerLegacyBaseUrl}/Campaigns/Summary/Index?IdCampaign=idCampaign`,
-    },
-    {
-      buttonText: "continue",
-      searchParams: "redirectedFromSummary=true&idABTest=idABTest",
-      urlExpected: `${dopplerLegacyBaseUrl}/Campaigns/Summary/TestAB?IdCampaign=idABTest`,
-    },
-  ])(
-    "should redirect to summary when $searchParams and user click in $buttonText",
-    async ({ buttonText, urlExpected, searchParams }) => {
-      // Arrange
-      const initialEntries = `/idCampaign?${searchParams}`;
-      // Act
-      render(<DoubleEditorWithStateLoaded initialEntries={[initialEntries]} />);
+  it("exit button should always redirect to campaign draft", async () => {
+    // Arrange
+    const buttonText = "exit_edit_later";
+    //const urlExpected
+    const initialEntries = `/idCampaign`;
 
-      // Assert
-      const buttonByText: HTMLAnchorElement = await screen.findByText(
-        buttonText
-      );
-      expect(buttonByText.href).toEqual(urlExpected);
-    }
-  );
+    // Act
+    render(<DoubleEditorWithStateLoaded initialEntries={[initialEntries]} />);
 
-  it.each([
-    {
-      buttonText: "continue",
-      searchParams: "redirectedFromSummary=false",
-      urlExpected:
-        `${dopplerLegacyBaseUrl}/Campaigns/Recipients/Index?IdCampaign=idCampaign` +
-        `&RedirectedFromSummary=False&RedirectedFromTemplateList=False`,
-    },
-    {
-      buttonText: "continue",
-      searchParams: "redirectedFromSummary=false&idABTest=idABTest",
-      urlExpected:
-        `${dopplerLegacyBaseUrl}/Campaigns/Recipients/TestAB?IdCampaign=idABTest` +
-        `&RedirectedFromSummary=False&RedirectedFromTemplateList=False`,
-    },
-  ])(
-    "no should redirect to summary when $searchParams and user click in $buttonText",
-    async ({ buttonText, urlExpected, searchParams }) => {
-      // Arrange
-      const initialEntries = [`/idCampaign?${searchParams}`];
-      // Act
-      render(<DoubleEditorWithStateLoaded initialEntries={initialEntries} />);
-      // Assert
-      const buttonByText: HTMLAnchorElement = await screen.findByText(
-        buttonText
-      );
-      expect(buttonByText.href).toEqual(urlExpected);
-    }
-  );
-
-  it.each([
-    {
-      searchParams: "redirectedFromSummary=true",
-    },
-    {
-      searchParams: "redirectedFromSummary=true&idABTest=idABTest",
-    },
-    {
-      searchParams: "redirectedFromSummary=false",
-    },
-    {
-      searchParams: "redirectedFromSummary=false&idABTest=idABTest",
-    },
-  ])(
-    "exit button should always redirect to campaign draft",
-    async ({ searchParams }) => {
-      // Arrange
-      const buttonText = "exit_edit_later";
-      //const urlExpected
-      const initialEntries = `/idCampaign?${searchParams}`;
-
-      // Act
-      render(<DoubleEditorWithStateLoaded initialEntries={[initialEntries]} />);
-
-      // Assert
-      const buttonByText: HTMLAnchorElement = await screen.findByText(
-        buttonText
-      );
-      expect(buttonByText.href).toEqual(
-        baseAppServices.appConfiguration.dopplerExternalUrls.campaigns
-      );
-    }
-  );
+    // Assert
+    const buttonByText: HTMLAnchorElement = await screen.findByText(buttonText);
+    expect(buttonByText.href).toEqual(
+      baseAppServices.appConfiguration.dopplerExternalUrls.campaigns
+    );
+  });
 });
