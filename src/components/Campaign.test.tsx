@@ -22,8 +22,6 @@ const baseAppServices = {
     }),
   },
   appConfiguration: {
-    unlayerProjectId: 12345,
-    unlayerEditorManifestUrl: "unlayerEditorManifestUrl",
     loaderUrl: "loaderUrl",
     dopplerLegacyBaseUrl,
     dopplerExternalUrls: {
