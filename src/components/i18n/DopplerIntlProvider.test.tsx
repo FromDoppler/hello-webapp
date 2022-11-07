@@ -1,13 +1,11 @@
 import { render, screen } from "@testing-library/react";
 import { DopplerIntlProvider } from "./DopplerIntlProvider";
 import { FormattedMessage } from "react-intl";
-import {
-  SimplifiedAppSessionState,
-  useAppSessionState,
-} from "../AppSessionStateContext";
+import { useAppSessionUserData } from "../application";
 import { MemoryRouter, Route, Routes } from "react-router-dom";
+import { AppSessionUserData } from "../../abstractions/application";
 
-jest.mock("../AppSessionStateContext");
+jest.mock("../application");
 jest.mock("./en", () => ({
   messages_en: {
     lang: "en",
@@ -19,18 +17,18 @@ jest.mock("./es", () => ({
   },
 }));
 
-const UNKNOWN_SESSION: SimplifiedAppSessionState = {
+const UNKNOWN_SESSION: AppSessionUserData = {
   status: "unknown",
 };
-const NON_AUTHENTICATED: SimplifiedAppSessionState = {
+const NON_AUTHENTICATED: AppSessionUserData = {
   status: "non-authenticated",
 };
-const AUTHENTICATED: SimplifiedAppSessionState = {
+const AUTHENTICATED: AppSessionUserData = {
   lang: "en",
   status: "authenticated",
   dopplerAccountName: "doppler_mock@mail.com",
 };
-const AUTHENTICATED_WITHOUT_LANG: any | SimplifiedAppSessionState = {
+const AUTHENTICATED_WITHOUT_LANG: any | AppSessionUserData = {
   status: "authenticated",
   dopplerAccountName: "doppler_mock@mail.com",
 };
@@ -59,7 +57,9 @@ describe(DopplerIntlProvider.name, () => {
     `should translate using the default Spanish language when user state is $sessionState.status`,
     ({ sessionState }) => {
       // Arrange
-      (useAppSessionState as jest.Mock).mockImplementation(() => sessionState);
+      (useAppSessionUserData as jest.Mock).mockImplementation(
+        () => sessionState
+      );
       const entry = "/campaigns/000";
       // Act
       render(<DopplerIntlProviderTestWrapper initialEntries={[entry]} />);
@@ -75,7 +75,7 @@ describe(DopplerIntlProvider.name, () => {
     `should translate a message to $language when user lang exists`,
     ({ userLanguage }) => {
       // Arrange
-      (useAppSessionState as jest.Mock).mockImplementation(() => ({
+      (useAppSessionUserData as jest.Mock).mockImplementation(() => ({
         ...AUTHENTICATED,
         lang: userLanguage,
       }));
@@ -92,7 +92,7 @@ describe(DopplerIntlProvider.name, () => {
       LANG_DEFAULT +
       " when user don't have lang",
     () => {
-      (useAppSessionState as jest.Mock).mockImplementation(
+      (useAppSessionUserData as jest.Mock).mockImplementation(
         () => AUTHENTICATED_WITHOUT_LANG
       );
       // Arrange
@@ -110,7 +110,7 @@ describe(DopplerIntlProvider.name, () => {
   ])(
     "should translate a message to $language when query param lang is $userLanguage",
     ({ userLanguage }) => {
-      (useAppSessionState as jest.Mock).mockImplementation(
+      (useAppSessionUserData as jest.Mock).mockImplementation(
         () => AUTHENTICATED_WITHOUT_LANG
       );
       // Arrange

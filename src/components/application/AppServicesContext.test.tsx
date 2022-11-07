@@ -1,15 +1,11 @@
 import { render, screen } from "@testing-library/react";
-import {
-  AppServicesProvider,
-  InjectAppServices,
-  useAppServices,
-} from "./AppServicesContext";
-import { AppConfiguration, AppServices } from "../abstractions";
-import { AppConfigurationRendererImplementation } from "../implementations/app-configuration-renderer";
+import { AppServicesProvider, injectAppServices, useAppServices } from ".";
+import { AppConfiguration, AppServices } from "../../abstractions/application";
+import { AppConfigurationRendererImplementation } from "../../implementations/AppConfigurationRendererImplementation";
 import {
   ServicesFactories,
   SingletonLazyAppServicesContainer,
-} from "../implementations/SingletonLazyAppServicesContainer";
+} from "../../implementations/SingletonLazyAppServicesContainer";
 
 const resultElementTestId = "result";
 
@@ -43,8 +39,8 @@ const buildTestScenario = () => {
   };
 };
 
-describe(InjectAppServices.name, () => {
-  const HocInjectedDemoComponent = InjectAppServices(
+describe(injectAppServices.name, () => {
+  const HocInjectedDemoComponent = injectAppServices(
     ({
       appServices: { appConfigurationRenderer },
     }: {

@@ -2,7 +2,7 @@ import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { EditorBottomBar } from "./EditorBottomBar";
 import { TestDopplerIntlProvider } from "./i18n/TestDopplerIntlProvider";
-import { useAppServices, AppServicesProvider } from "./AppServicesContext";
+import { AppServicesProvider } from "./application";
 
 const appConfiguration = {
   dopplerLegacyBaseUrl: "https://appint.fromdoppler.net",

@@ -13,7 +13,7 @@ export type AppConfiguration = {
   readonly dopplerExternalUrls: dopplerExternalUrls;
 };
 
-export type dopplerExternalUrls = {
+type dopplerExternalUrls = {
   readonly home: string;
   readonly campaigns: string;
   readonly lists: string;

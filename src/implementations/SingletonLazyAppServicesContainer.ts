@@ -1,4 +1,4 @@
-import { AppServices } from "../abstractions";
+import { AppServices } from "../abstractions/application";
 
 export type ServicesFactories = {
   [Property in keyof AppServices as `${string & Property}Factory`]: (

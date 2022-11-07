@@ -1,12 +1,7 @@
 import { screen, render } from "@testing-library/react";
-import { AppServices } from "../abstractions";
-import { AppServicesProvider } from "./AppServicesContext";
+import { AppServices } from "../../abstractions/application";
+import { AppServicesProvider, RequireAuth } from ".";
 import { AppSessionStateContext } from "./AppSessionStateContext";
-import { RequireAuth } from "./RequireAuth";
-
-jest.mock("./LoadingScreen", () => ({
-  LoadingScreen: () => <div>Loading...</div>,
-}));
 
 describe(RequireAuth.name, () => {
   it("should render a waiting message when session status is unknown", () => {
@@ -28,7 +23,7 @@ describe(RequireAuth.name, () => {
       </AppServicesProvider>
     );
     // Assert
-    const expectedTextEl = screen.queryByText("Loading...");
+    const expectedTextEl = screen.queryByTestId("loading-page");
     expect(expectedTextEl).toBeInTheDocument();
     const privateTextEl = screen.queryByText(privateText);
     expect(privateTextEl).not.toBeInTheDocument();

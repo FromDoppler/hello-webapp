@@ -1,6 +1,6 @@
 import { QueryFunction, useMutation, useQuery } from "react-query";
 import { Content } from "../abstractions/domain/content";
-import { useAppServices } from "../components/AppServicesContext";
+import { useAppServices } from "../components/application";
 
 type getCampaignContentQueryKey = {
   scope: string;

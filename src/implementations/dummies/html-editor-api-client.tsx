@@ -1,6 +1,6 @@
 import { timeout } from "../../utils";
 import { HtmlEditorApiClient } from "../../abstractions/html-editor-api-client";
-import { Result } from "../../abstractions/common/result-types";
+import { Result } from "../../abstractions/result-types";
 import sampleUnlayerDesign from "./sample-unlayer-design.json";
 import { Content } from "../../abstractions/domain/content";
 

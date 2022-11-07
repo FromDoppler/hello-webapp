@@ -1,6 +1,6 @@
 import { QueryFunction, useQuery } from "react-query";
 import { Field } from "../abstractions/doppler-rest-api-client";
-import { useAppServices } from "../components/AppServicesContext";
+import { useAppServices } from "../components/application";
 
 // TODO: include user ID in the key
 
@@ -12,7 +12,7 @@ type GetUserFieldsQueryKey = {
 export const useGetUserFields = () => {
   const { dopplerRestApiClient, appSessionStateAccessor } = useAppServices();
 
-  const currentSessionState = appSessionStateAccessor.getCurrentSessionState();
+  const currentSessionState = appSessionStateAccessor.getSessionAuthData();
   const dopplerAccountName =
     currentSessionState.status === "authenticated"
       ? currentSessionState.dopplerAccountName

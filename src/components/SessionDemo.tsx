@@ -1,25 +1,24 @@
-import { useAppServices } from "./AppServicesContext";
-import { useAppSessionState } from "./AppSessionStateContext";
+import { useAppServices, useAppSessionUserData } from "./application";
 
 export const SessionDemo = () => {
   const { appSessionStateAccessor } = useAppServices();
-  const sessionState = useAppSessionState();
+  const sessionUserData = useAppSessionUserData();
   return (
     <>
       <code>
         <pre>
-          SessionStateStatus from context: {sessionState.status}
+          SessionStateStatus from context: {sessionUserData.status}
           <br />
-          SimplifiedSessionState from context: {JSON.stringify(sessionState)}
+          UserData from context: {JSON.stringify(sessionUserData)}
           <br />
-          SessionState from AppServices:{" "}
-          {JSON.stringify(appSessionStateAccessor.getCurrentSessionState())}
+          AuthData from AppServices:{" "}
+          {JSON.stringify(appSessionStateAccessor.getSessionAuthData())}
         </pre>
       </code>
       <p>
         SessionState from AppServices could be not rendered updated because
         React does not know when it changes. If we need updated in a React
-        component, we can use <code>useAppSessionState()</code>
+        component, we can use <code>AppSessionUserData()</code>
       </p>
     </>
   );

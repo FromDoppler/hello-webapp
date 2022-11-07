@@ -1,8 +1,8 @@
-import { render, screen, waitFor } from "@testing-library/react";
+import { render, screen } from "@testing-library/react";
 import { App } from "./App";
 import { MemoryRouter } from "react-router-dom";
-import { AppServicesProvider } from "./AppServicesContext";
-import { AppServices } from "../abstractions";
+import { AppServicesProvider } from "./application";
+import { AppServices } from "../abstractions/application";
 import { QueryClient, QueryClientProvider } from "react-query";
 import { Field } from "../abstractions/doppler-rest-api-client";
 import { TestDopplerIntlProvider } from "./i18n/TestDopplerIntlProvider";
@@ -17,7 +17,8 @@ const notFoundContent = "There's nothing here!";
 
 const baseAppServices = {
   appSessionStateAccessor: {
-    getCurrentSessionState: () => ({}),
+    getSessionUserData: () => ({}),
+    getSessionAuthData: () => ({}),
   },
   appConfiguration: {},
   dopplerRestApiClient: {

@@ -1,9 +1,12 @@
-import { AppConfiguration } from ".";
 import { AxiosStatic } from "axios";
-import { AppConfigurationRenderer } from "./app-configuration-renderer";
-import { AppSessionStateAccessor, AppSessionStateMonitor } from "./app-session";
-import { HtmlEditorApiClient } from "./html-editor-api-client";
-import { DopplerRestApiClient } from "./doppler-rest-api-client";
+import {
+  AppConfiguration,
+  AppSessionStateAccessor,
+  AppSessionStateMonitor,
+} from ".";
+import { AppConfigurationRenderer } from "../app-configuration-renderer";
+import { HtmlEditorApiClient } from "../html-editor-api-client";
+import { DopplerRestApiClient } from "../doppler-rest-api-client";
 
 export type AppServices = {
   window: Window;

@@ -1,7 +1,9 @@
-import { AppConfiguration } from "../abstractions";
+import {
+  AppConfiguration,
+  AppSessionStateAccessor,
+} from "../abstractions/application";
 import { AxiosStatic } from "axios";
 import { HtmlEditorApiClientImpl } from "./HtmlEditorApiClientImpl";
-import { AppSessionStateAccessor } from "../abstractions/app-session";
 import { Content } from "../abstractions/domain/content";
 
 describe(HtmlEditorApiClientImpl.name, () => {
@@ -13,14 +15,16 @@ describe(HtmlEditorApiClientImpl.name, () => {
       const dopplerAccountName = "dopplerAccountName";
       const htmlEditorApiBaseUrl = "htmlEditorApiBaseUrl";
 
-      const authenticatedSession = {
-        status: "authenticated",
-        jwtToken,
-        dopplerAccountName,
-      };
-
       const appSessionStateAccessor = {
-        getCurrentSessionState: () => authenticatedSession,
+        getSessionUserData: () => ({
+          status: "authenticated",
+          dopplerAccountName,
+        }),
+        getSessionAuthData: () => ({
+          status: "authenticated",
+          dopplerAccountName,
+          jwtToken,
+        }),
       } as AppSessionStateAccessor;
 
       const htmlContent = "<html></html>";
@@ -92,14 +96,16 @@ describe(HtmlEditorApiClientImpl.name, () => {
       const dopplerAccountName = "dopplerAccountName";
       const htmlEditorApiBaseUrl = "htmlEditorApiBaseUrl";
 
-      const authenticatedSession = {
-        status: "authenticated",
-        jwtToken,
-        dopplerAccountName,
-      };
-
       const appSessionStateAccessor = {
-        getCurrentSessionState: () => authenticatedSession,
+        getSessionUserData: () => ({
+          status: "authenticated",
+          dopplerAccountName,
+        }),
+        getSessionAuthData: () => ({
+          status: "authenticated",
+          dopplerAccountName,
+          jwtToken,
+        }),
       } as AppSessionStateAccessor;
 
       const htmlContent = "<html></html>";
@@ -162,10 +168,14 @@ describe(HtmlEditorApiClientImpl.name, () => {
       // Arrange
       const error = new Error("Network error");
       const appSessionStateAccessor = {
-        getCurrentSessionState: () => ({
+        getSessionUserData: () => ({
           status: "authenticated",
-          jwtToken: "jwtToken",
           dopplerAccountName: "dopplerAccountName",
+        }),
+        getSessionAuthData: () => ({
+          status: "authenticated",
+          dopplerAccountName: "dopplerAccountName",
+          jwtToken: "jwtToken",
         }),
       } as AppSessionStateAccessor;
 
@@ -201,7 +211,10 @@ describe(HtmlEditorApiClientImpl.name, () => {
       async ({ sessionStatus }) => {
         // Arrange
         const appSessionStateAccessor = {
-          getCurrentSessionState: () => ({
+          getSessionUserData: () => ({
+            status: sessionStatus,
+          }),
+          getSessionAuthData: () => ({
             status: sessionStatus,
           }),
         } as AppSessionStateAccessor;
@@ -244,14 +257,16 @@ describe(HtmlEditorApiClientImpl.name, () => {
       const dopplerAccountName = "dopplerAccountName";
       const htmlEditorApiBaseUrl = "htmlEditorApiBaseUrl";
 
-      const authenticatedSession = {
-        status: "authenticated",
-        jwtToken,
-        dopplerAccountName,
-      };
-
       const appSessionStateAccessor = {
-        getCurrentSessionState: () => authenticatedSession,
+        getSessionUserData: () => ({
+          status: "authenticated",
+          dopplerAccountName,
+        }),
+        getSessionAuthData: () => ({
+          status: "authenticated",
+          dopplerAccountName,
+          jwtToken,
+        }),
       } as AppSessionStateAccessor;
 
       const htmlContent = "<html></html>";
@@ -313,14 +328,16 @@ describe(HtmlEditorApiClientImpl.name, () => {
       const dopplerAccountName = "dopplerAccountName";
       const htmlEditorApiBaseUrl = "htmlEditorApiBaseUrl";
 
-      const authenticatedSession = {
-        status: "authenticated",
-        jwtToken,
-        dopplerAccountName,
-      };
-
       const appSessionStateAccessor = {
-        getCurrentSessionState: () => authenticatedSession,
+        getSessionUserData: () => ({
+          status: "authenticated",
+          dopplerAccountName,
+        }),
+        getSessionAuthData: () => ({
+          status: "authenticated",
+          dopplerAccountName,
+          jwtToken,
+        }),
       } as AppSessionStateAccessor;
 
       const htmlContent = "<html></html>";

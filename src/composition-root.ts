@@ -1,10 +1,7 @@
 import axios from "axios";
-import { AppConfiguration, AppServices } from "./abstractions";
-import { AppConfigurationRendererImplementation } from "./implementations/app-configuration-renderer";
-import {
-  DopplerSessionMfeAppSessionStateAccessor,
-  DopplerSessionMfeAppSessionStateMonitor,
-} from "./implementations/app-session/doppler-mfe-app-session-state-monitor";
+import { AppConfiguration, AppServices } from "./abstractions/application";
+import { AppConfigurationRendererImplementation } from "./implementations/AppConfigurationRendererImplementation";
+import { SessionMfeAppSessionStateClient } from "./implementations/session-mfe/SessionMfeAppSessionStateClient";
 import {
   ServicesFactories,
   SingletonLazyAppServicesContainer,
@@ -45,12 +42,12 @@ export const configureApp = (
         appSessionStateAccessor,
         appConfiguration,
       }),
-    appSessionStateAccessorFactory: ({ window }: AppServices) =>
-      new DopplerSessionMfeAppSessionStateAccessor({ window }),
     appSessionStateMonitorFactory: ({ window }: AppServices) =>
-      new DopplerSessionMfeAppSessionStateMonitor({
-        window,
-      }),
+      new SessionMfeAppSessionStateClient({ window }),
+    appSessionStateAccessorFactory: ({ appSessionStateMonitor }: AppServices) =>
+      // Casting because the same instance of SessionMfeAppSessionStateClient
+      // will be use for appSessionStateMonitor and appSessionStateAccessor
+      appSessionStateMonitor as SessionMfeAppSessionStateClient,
   };
 
   const dummyFactories: Partial<ServicesFactories> = {

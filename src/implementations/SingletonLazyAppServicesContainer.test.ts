@@ -1,5 +1,5 @@
-import { AppConfiguration, AppServices } from "../abstractions";
-import { AppConfigurationRendererImplementation } from "./app-configuration-renderer";
+import { AppConfiguration, AppServices } from "../abstractions/application";
+import { AppConfigurationRendererImplementation } from "./AppConfigurationRendererImplementation";
 import {
   ServicesFactories,
   SingletonLazyAppServicesContainer,
