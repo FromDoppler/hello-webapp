@@ -1,4 +1,4 @@
-import { AppConfiguration, AppServices } from "../../abstractions";
+import { AppConfiguration, AppServices } from "../abstractions/application";
 
 export class AppConfigurationRendererImplementation {
   private readonly _appConfiguration: AppConfiguration;

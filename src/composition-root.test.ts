@@ -1,5 +1,5 @@
 import { configureApp } from "./composition-root";
-import { AppConfiguration } from "./abstractions";
+import { AppConfiguration } from "./abstractions/application";
 
 describe(configureApp.name, () => {
   it("should return appConfiguration.basename undefined when the parameter is undefined", () => {

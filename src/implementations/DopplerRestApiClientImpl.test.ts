@@ -1,7 +1,9 @@
-import { AppConfiguration } from "../abstractions";
+import {
+  AppConfiguration,
+  AppSessionStateAccessor,
+} from "../abstractions/application";
 import { AxiosStatic } from "axios";
 import { DopplerRestApiClientImpl } from "./DopplerRestApiClientImpl";
-import { AppSessionStateAccessor } from "../abstractions/app-session";
 
 describe(DopplerRestApiClientImpl.name, () => {
   describe("getFields", () => {

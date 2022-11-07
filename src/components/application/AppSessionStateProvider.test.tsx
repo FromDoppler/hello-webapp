@@ -1,16 +1,16 @@
 import { act, render } from "@testing-library/react";
 import {
+  AppServicesProvider,
   AppSessionStateProvider,
   useAppSessionUserData,
-} from "./AppSessionStateContext";
-import { AppServicesProvider } from "./AppServicesContext";
-import { AppServices } from "../abstractions";
+} from ".";
 import {
+  AppServices,
   AppSessionStateAccessor,
   AppSessionStateMonitor,
   AppSessionUserData,
-} from "../abstractions/app-session";
-import { SessionMfeAppSessionStateClient } from "../implementations/app-session/doppler-mfe-app-session-state-monitor";
+} from "../../abstractions/application";
+import { SessionMfeAppSessionStateClient } from "../../implementations/session-mfe/SessionMfeAppSessionStateClient";
 
 const expectedLang = "en";
 const UNKNOWN_SESSION: AppSessionUserData = {

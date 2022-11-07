@@ -1,23 +1,5 @@
-import React, { createContext, useContext } from "react";
-
-import { AppServices } from "../abstractions";
-
-// I have not the default services available yet :(
-const defaultAppServices = {} as AppServices;
-
-const AppServicesContext = createContext<AppServices>(defaultAppServices);
-
-export const AppServicesProvider = ({
-  children,
-  appServices,
-}: {
-  children: React.ReactNode;
-  appServices: AppServices;
-}) => (
-  <AppServicesContext.Provider value={appServices}>
-    {children}
-  </AppServicesContext.Provider>
-);
+import { AppServices } from "../../abstractions/application";
+import { AppServicesContext } from "./AppServicesContext";
 
 export function InjectAppServices<
   T extends { appServices: Partial<AppServices> }
@@ -34,5 +16,3 @@ export function InjectAppServices<
       </AppServicesContext.Consumer>
     );
 }
-
-export const useAppServices = () => useContext(AppServicesContext);

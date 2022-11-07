@@ -4,7 +4,7 @@ import {
   Field,
 } from "../../abstractions/doppler-rest-api-client";
 import sampleUserFields from "./sample-user-fields.json";
-import { Result } from "../../abstractions/common/result-types";
+import { Result } from "../../abstractions/result-types";
 
 export class DummyDopplerRestApiClient implements DopplerRestApiClient {
   getFields: () => Promise<Result<Field[]>> = async () => {

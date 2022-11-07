@@ -1,11 +1,13 @@
-import { Result } from "../abstractions/common/result-types";
-import { AppConfiguration } from "../abstractions";
+import { Result } from "../abstractions/result-types";
+import {
+  AppConfiguration,
+  AppSessionStateAccessor,
+} from "../abstractions/application";
 import {
   DopplerRestApiClient,
   Field,
 } from "../abstractions/doppler-rest-api-client";
 import { AxiosStatic, Method } from "axios";
-import { AppSessionStateAccessor } from "../abstractions/app-session";
 
 export class DopplerRestApiClientImpl implements DopplerRestApiClient {
   private axios;

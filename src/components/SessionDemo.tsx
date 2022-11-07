@@ -1,5 +1,4 @@
-import { useAppServices } from "./AppServicesContext";
-import { useAppSessionUserData } from "./AppSessionStateContext";
+import { useAppServices, useAppSessionUserData } from "./application";
 
 export const SessionDemo = () => {
   const { appSessionStateAccessor } = useAppServices();

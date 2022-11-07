@@ -1,11 +1,11 @@
 import { render, screen } from "@testing-library/react";
 import { DopplerIntlProvider } from "./DopplerIntlProvider";
 import { FormattedMessage } from "react-intl";
-import { useAppSessionUserData } from "../AppSessionStateContext";
+import { useAppSessionUserData } from "../application";
 import { MemoryRouter, Route, Routes } from "react-router-dom";
-import { AppSessionUserData } from "../../abstractions/app-session";
+import { AppSessionUserData } from "../../abstractions/application";
 
-jest.mock("../AppSessionStateContext");
+jest.mock("../application");
 jest.mock("./en", () => ({
   messages_en: {
     lang: "en",

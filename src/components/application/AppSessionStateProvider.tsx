@@ -1,10 +1,7 @@
-import { createContext, useContext, useEffect, useState } from "react";
-import { AppSessionUserData } from "../abstractions/app-session";
-import { useAppServices } from "./AppServicesContext";
-
-export const AppSessionStateContext = createContext<AppSessionUserData>({
-  status: "unknown",
-});
+import { useEffect, useState } from "react";
+import { useAppServices } from ".";
+import { AppSessionUserData } from "../../abstractions/application";
+import { AppSessionStateContext } from "./AppSessionStateContext";
 
 export const AppSessionStateProvider = ({
   children,
@@ -35,5 +32,3 @@ export const AppSessionStateProvider = ({
     </AppSessionStateContext.Provider>
   );
 };
-
-export const useAppSessionUserData = () => useContext(AppSessionStateContext);

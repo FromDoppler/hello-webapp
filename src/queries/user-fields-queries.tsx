@@ -1,6 +1,6 @@
 import { QueryFunction, useQuery } from "react-query";
 import { Field } from "../abstractions/doppler-rest-api-client";
-import { useAppServices } from "../components/AppServicesContext";
+import { useAppServices } from "../components/application";
 
 // TODO: include user ID in the key
 

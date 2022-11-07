@@ -1,4 +1,4 @@
-import { useAppServices } from "./AppServicesContext";
+import { useAppServices } from "./application";
 
 export const ConfigurationDemo = () => {
   const { appConfigurationRenderer } = useAppServices();

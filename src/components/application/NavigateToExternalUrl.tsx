@@ -1,5 +1,5 @@
 import { useLayoutEffect } from "react";
-import { useAppServices } from "./AppServicesContext";
+import { useAppServices } from ".";
 
 export const NavigateToExternalUrl = ({ to }: { to: string }) => {
   const {

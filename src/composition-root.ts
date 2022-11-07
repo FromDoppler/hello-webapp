@@ -1,7 +1,7 @@
 import axios from "axios";
-import { AppConfiguration, AppServices } from "./abstractions";
-import { AppConfigurationRendererImplementation } from "./implementations/app-configuration-renderer";
-import { SessionMfeAppSessionStateClient } from "./implementations/app-session/doppler-mfe-app-session-state-monitor";
+import { AppConfiguration, AppServices } from "./abstractions/application";
+import { AppConfigurationRendererImplementation } from "./implementations/AppConfigurationRendererImplementation";
+import { SessionMfeAppSessionStateClient } from "./implementations/session-mfe/SessionMfeAppSessionStateClient";
 import {
   ServicesFactories,
   SingletonLazyAppServicesContainer,

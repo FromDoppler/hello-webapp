@@ -5,8 +5,10 @@ import "./index.css";
 import { App } from "./components/App";
 import { reportWebVitals } from "./reportWebVitals";
 import { configureApp } from "./composition-root";
-import { AppServicesProvider } from "./components/AppServicesContext";
-import { AppSessionStateProvider } from "./components/AppSessionStateContext";
+import {
+  AppServicesProvider,
+  AppSessionStateProvider,
+} from "./components/application";
 import { QueryClient, QueryClientProvider } from "react-query";
 import { DopplerIntlProvider } from "./components/i18n/DopplerIntlProvider";
 

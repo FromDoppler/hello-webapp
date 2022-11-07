@@ -1,4 +1,4 @@
-import { Result } from "../common/result-types";
+import { Result } from "./result-types";
 
 export type Field = {
   name: string;

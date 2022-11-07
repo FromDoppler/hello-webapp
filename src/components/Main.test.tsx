@@ -1,9 +1,9 @@
 import { render, screen } from "@testing-library/react";
 import { QueryClient, QueryClientProvider } from "react-query";
 import { BrowserRouter } from "react-router-dom";
-import { AppServices } from "../abstractions";
+import { AppServices } from "../abstractions/application";
 import { Field } from "../abstractions/doppler-rest-api-client";
-import { AppServicesProvider } from "./AppServicesContext";
+import { AppServicesProvider } from "./application";
 import { Main, mainTestId } from "./Main";
 import { TestDopplerIntlProvider } from "./i18n/TestDopplerIntlProvider";
 

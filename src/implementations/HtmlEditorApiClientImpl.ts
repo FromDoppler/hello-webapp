@@ -1,8 +1,10 @@
-import { Result } from "../abstractions/common/result-types";
-import { AppConfiguration } from "../abstractions";
+import { Result } from "../abstractions/result-types";
+import {
+  AppConfiguration,
+  AppSessionStateAccessor,
+} from "../abstractions/application";
 import { HtmlEditorApiClient } from "../abstractions/html-editor-api-client";
 import { AxiosStatic, Method } from "axios";
-import { AppSessionStateAccessor } from "../abstractions/app-session";
 import { Content } from "../abstractions/domain/content";
 
 export class HtmlEditorApiClientImpl implements HtmlEditorApiClient {

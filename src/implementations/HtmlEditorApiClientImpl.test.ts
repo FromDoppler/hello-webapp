@@ -1,7 +1,9 @@
-import { AppConfiguration } from "../abstractions";
+import {
+  AppConfiguration,
+  AppSessionStateAccessor,
+} from "../abstractions/application";
 import { AxiosStatic } from "axios";
 import { HtmlEditorApiClientImpl } from "./HtmlEditorApiClientImpl";
-import { AppSessionStateAccessor } from "../abstractions/app-session";
 import { Content } from "../abstractions/domain/content";
 
 describe(HtmlEditorApiClientImpl.name, () => {

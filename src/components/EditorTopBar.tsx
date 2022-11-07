@@ -1,6 +1,6 @@
 import { DropdownButton } from "./DropdownButton";
 import "./EditorTopBar.css";
-import { useAppServices } from "./AppServicesContext";
+import { useAppServices } from "./application";
 import { FormattedMessage, useIntl } from "react-intl";
 
 interface EditorTopBarProps {

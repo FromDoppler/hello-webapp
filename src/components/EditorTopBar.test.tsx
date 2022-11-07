@@ -1,6 +1,6 @@
 import { render, screen } from "@testing-library/react";
 import { act } from "react-dom/test-utils";
-import { AppServicesProvider } from "./AppServicesContext";
+import { AppServicesProvider } from "./application";
 import { EditorTopBar } from "./EditorTopBar";
 import { TestDopplerIntlProvider } from "./i18n/TestDopplerIntlProvider";
 

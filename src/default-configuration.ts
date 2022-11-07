@@ -1,4 +1,4 @@
-import { AppConfiguration } from "./abstractions";
+import { AppConfiguration } from "./abstractions/application";
 
 export const defaultAppConfiguration: AppConfiguration = {
   basename: undefined,

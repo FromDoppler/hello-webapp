@@ -3,7 +3,7 @@ import { IntlProvider } from "react-intl";
 import { messages_en } from "./en";
 import { messages_es } from "./es";
 import { flattenMessages, sanitizeLanguageOrDefault } from "./utils";
-import { useAppSessionUserData } from "../AppSessionStateContext";
+import { useAppSessionUserData } from "../application";
 import { useSearchParams } from "react-router-dom";
 
 const messages = {

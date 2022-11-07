@@ -5,7 +5,7 @@ import { Invoices } from "./invoices";
 import { Campaign } from "./Campaign";
 import { Template } from "./Template";
 import { ConfigurationDemo } from "./ConfigurationDemo";
-import { RequireAuth } from "./RequireAuth";
+import { RequireAuth } from "./application";
 import { SessionDemo } from "./SessionDemo";
 
 export const App = () => (

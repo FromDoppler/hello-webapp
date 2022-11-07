@@ -6,8 +6,8 @@ import {
 } from "../queries/campaign-content-queries";
 import { EditorBottomBar } from "./EditorBottomBar";
 import { useIntl } from "react-intl";
-import { useAppServices } from "./AppServicesContext";
-import { LoadingScreen } from "./LoadingScreen";
+import { useAppServices } from "./application";
+import { LoadingScreen } from "./application/LoadingScreen";
 
 export const errorMessageTestId = "error-message";
 export const editorTopBarTestId = "editor-top-bar-message";
