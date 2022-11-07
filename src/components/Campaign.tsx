@@ -1,4 +1,4 @@
-import { useParams, useSearchParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { EditorTopBar } from "./EditorTopBar";
 import {
   useGetCampaignContent,
@@ -8,6 +8,7 @@ import { EditorBottomBar } from "./EditorBottomBar";
 import { useIntl } from "react-intl";
 import { useAppServices } from "./application";
 import { LoadingScreen } from "./application/LoadingScreen";
+import { useRef } from "react";
 
 export const errorMessageTestId = "error-message";
 export const editorTopBarTestId = "editor-top-bar-message";
@@ -18,18 +19,18 @@ export const Campaign = () => {
   }>;
 
   const {
-    appConfiguration: { dopplerLegacyBaseUrl, dopplerExternalUrls },
+    appConfiguration: { dopplerExternalUrls },
   } = useAppServices();
 
-  const [searchParams] = useSearchParams();
   const campaignContentQuery = useGetCampaignContent(idCampaign);
   const campaignContentMutation = useUpdateCampaignContent();
+  const textAreaRef = useRef<HTMLTextAreaElement>(null);
   const intl = useIntl();
 
   const save = () => {
     campaignContentMutation.mutate({
       idCampaign,
-      content: { htmlContent: "string", previewImage: "string", type: "html" },
+      content: JSON.parse(textAreaRef.current?.value || ""),
     });
   };
 
@@ -41,18 +42,6 @@ export const Campaign = () => {
       </div>
     );
   }
-
-  const redirectedFromSummary =
-    searchParams.get("redirectedFromSummary")?.toUpperCase() === "TRUE";
-
-  const idABTest = searchParams.get("idABTest");
-  const fixedIdCampaign = idABTest ? idABTest : idCampaign;
-  const testABIndexSegment = idABTest ? "TestAB" : "Index";
-
-  const nextUrl = redirectedFromSummary
-    ? `${dopplerLegacyBaseUrl}/Campaigns/Summary/${testABIndexSegment}?IdCampaign=${fixedIdCampaign}`
-    : `${dopplerLegacyBaseUrl}/Campaigns/Recipients/${testABIndexSegment}?IdCampaign=${fixedIdCampaign}` +
-      `&RedirectedFromSummary=False&RedirectedFromTemplateList=False`;
 
   const exitUrl = dopplerExternalUrls.campaigns;
 
@@ -67,8 +56,12 @@ export const Campaign = () => {
             onSave={save}
             title={intl.formatMessage({ id: "campaign_title" }, { idCampaign })}
           />
+          <textarea
+            ref={textAreaRef}
+            defaultValue={JSON.stringify(campaignContentQuery.data)}
+          />
           <EditorBottomBar
-            nextUrl={nextUrl}
+            nextUrl={exitUrl}
             exitUrl={exitUrl}
           ></EditorBottomBar>
         </>

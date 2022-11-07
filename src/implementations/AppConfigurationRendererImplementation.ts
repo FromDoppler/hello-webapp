@@ -7,7 +7,7 @@ export class AppConfigurationRendererImplementation {
     this._appConfiguration = appConfiguration;
   }
 
-  render() {
-    return JSON.stringify(this._appConfiguration);
+  getConfigurationAsJsonString() {
+    return JSON.stringify(this._appConfiguration, null, "  ");
   }
 }

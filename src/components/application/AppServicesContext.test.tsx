@@ -10,7 +10,9 @@ import {
 const resultElementTestId = "result";
 
 const buildTestScenario = () => {
-  const configurationAsJson = '{"testProperty":"test value"}';
+  const configurationAsJson = `{
+  "testProperty": "test value"
+}`;
   const appConfigurationResult = {
     testProperty: "test value",
   } as unknown as AppConfiguration;
@@ -48,7 +50,7 @@ describe(injectAppServices.name, () => {
     }) => (
       <code>
         <pre data-testid={resultElementTestId}>
-          {appConfigurationRenderer?.render()}
+          {appConfigurationRenderer?.getConfigurationAsJsonString()}
         </pre>
       </code>
     )
@@ -123,7 +125,7 @@ describe(useAppServices.name, () => {
     return (
       <code>
         <pre data-testid={resultElementTestId}>
-          {appConfigurationRenderer?.render()}
+          {appConfigurationRenderer?.getConfigurationAsJsonString()}
         </pre>
       </code>
     );
