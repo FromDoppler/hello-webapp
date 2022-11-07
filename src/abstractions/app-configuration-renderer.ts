@@ -1,3 +1,3 @@
 export interface AppConfigurationRenderer {
-  render(): string;
+  getConfigurationAsJsonString(): string;
 }
