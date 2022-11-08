@@ -18,11 +18,12 @@ but based on manifest files in our CDN in place of Docker images.
 
 - [ ] Add linting for Dockerfile
 - [ ] Review Renovate configuration based on our recent learnings
-- [ ] Add sample pages with data loading and saving
-- [ ] Review Session management, probably we could copy the simplified version from Menu MFE
-- [ ] Consider removing AppConfigurationRenderer
-- [ ] Cleanup components
-- [ ] Add a page in our Swarm including Menu MFE and Style Guide
+- [x] Add sample pages with data loading and saving
+- [x] Review Session management, probably we could copy the simplified version from Menu MFE
+- [x] ~~Consider removing AppConfigurationRenderer~~
+- [x] Cleanup components
+- [x] Add a page in our Swarm including Menu MFE and Style Guide
+  - See PR [#712](https://github.com/MakingSense/doppler-swarm/pull/712)
 - [ ] Hide contents until Menu MFE and Style Guide are ready
 
 ## Usage of the released packages
