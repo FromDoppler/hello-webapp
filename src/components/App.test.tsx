@@ -3,7 +3,7 @@ import { App } from "./App";
 import { MemoryRouter } from "react-router-dom";
 import { AppServicesProvider } from "./application";
 import { AppServices } from "../abstractions/application";
-import { QueryClient, QueryClientProvider } from "react-query";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { Field } from "../abstractions/doppler-rest-api-client";
 import { TestDopplerIntlProvider } from "./i18n/TestDopplerIntlProvider";
 
