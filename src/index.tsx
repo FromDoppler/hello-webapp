@@ -9,7 +9,7 @@ import {
   AppServicesProvider,
   AppSessionStateProvider,
 } from "./components/application";
-import { QueryClient, QueryClientProvider } from "react-query";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { DopplerIntlProvider } from "./components/i18n/DopplerIntlProvider";
 
 const customConfiguration = (window as any)["hello-webapp-configuration"] || {};
