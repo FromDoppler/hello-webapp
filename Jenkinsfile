@@ -38,7 +38,7 @@ pipeline {
         }
         stage('Publish in our CDN') {
             environment {
-                PKG_NAME = "hello-webapp"
+                PKG_NAME = "hello-webapp${PACKAGE_SUFFIX}"
             }
             stages {
                 stage('Publish pre-release packages from pull request') {
