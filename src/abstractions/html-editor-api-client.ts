@@ -5,6 +5,6 @@ export interface HtmlEditorApiClient {
   getCampaignContent: (campaignId: string) => Promise<Result<Content>>;
   updateCampaignContent: (
     campaignId: string,
-    content: Content
+    content: Content,
   ) => Promise<Result>;
 }

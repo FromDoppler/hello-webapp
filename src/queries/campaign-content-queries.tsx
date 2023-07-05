@@ -18,7 +18,7 @@ export const useGetCampaignContent = (idCampaign: string) => {
   ];
 
   const queryFn: QueryFunction<Content, getCampaignContentQueryKey> = async (
-    context
+    context,
   ) => {
     const [{ idCampaign }] = context.queryKey;
     const result = await htmlEditorApiClient.getCampaignContent(idCampaign);

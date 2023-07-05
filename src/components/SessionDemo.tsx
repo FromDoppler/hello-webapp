@@ -15,7 +15,7 @@ export const SessionDemo = () => {
           {JSON.stringify(
             appSessionStateAccessor.getSessionAuthData(),
             null,
-            " "
+            " ",
           )}
         </pre>
       </code>

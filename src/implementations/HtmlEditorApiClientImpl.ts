@@ -84,7 +84,7 @@ export class HtmlEditorApiClientImpl implements HtmlEditorApiClient {
 
   async updateCampaignContent(
     campaignId: string,
-    content: Content
+    content: Content,
   ): Promise<Result> {
     const body = {
       htmlContent: content.htmlContent,

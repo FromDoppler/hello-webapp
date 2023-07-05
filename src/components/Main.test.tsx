@@ -38,7 +38,7 @@ describe("Main.name", () => {
             </BrowserRouter>
           </TestDopplerIntlProvider>
         </AppServicesProvider>
-      </QueryClientProvider>
+      </QueryClientProvider>,
     );
     const outletElement = screen.queryByTestId(mainTestId);
     expect(outletElement).toBeInTheDocument();

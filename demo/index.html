@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
   <head>
     <meta charset="utf-8" />
@@ -27,7 +27,7 @@
         true,
         function (parsed) {
           assetServices.load({ manifestURL: parsed.manifestUrl });
-        }
+        },
       );
       // # End region Style-Guide
 
@@ -46,7 +46,7 @@
           };
 
           assetServices.load({ manifestURL: parsed.manifestUrl });
-        }
+        },
       );
       // # End region Doppler Session
 
@@ -65,7 +65,7 @@
           };
 
           assetServices.load({ manifestURL: parsed.manifestUrl });
-        }
+        },
       );
       // # End region Editor
 
@@ -76,7 +76,7 @@
         defaultVersion,
         defaultCommitId,
         avoidCacheDefault,
-        action
+        action,
       ) {
         const cdnBaseUrl = "https://cdn.fromdoppler.com";
 
@@ -85,7 +85,7 @@
             prefix +
             "_version=((?:(?:main)|(?:INT)|(?:pr-\\d+)|(?:v\\d+(?:\\.\\d+){0,2})))" +
             "(?:-([a-f\\d]{40}))?" +
-            "(?:&.*)?$"
+            "(?:&.*)?$",
         );
         const versionParamRegexResult = href.match(versionParamRegex);
         const version = versionParamRegexResult
@@ -96,7 +96,7 @@
           defaultCommitId;
 
         const avoidCacheParamRegex = new RegExp(
-          "\\?(?:.+&)*" + prefix + "_nocache=((?:true)|(?:false))(?:&.*)?$"
+          "\\?(?:.+&)*" + prefix + "_nocache=((?:true)|(?:false))(?:&.*)?$",
         );
         const avoidCacheParamRegexResult = href.match(avoidCacheParamRegex);
         const avoidCache = avoidCacheParamRegexResult
@@ -104,7 +104,7 @@
           : avoidCacheDefault;
 
         const useDummiesParamRegex = new RegExp(
-          "\\?(?:.+&)*" + prefix + "_dummy=((?:true)|(?:false))(?:&.*)?$"
+          "\\?(?:.+&)*" + prefix + "_dummy=((?:true)|(?:false))(?:&.*)?$",
         );
         const useDummiesParamRegexResult = href.match(useDummiesParamRegex);
         const useDummiesDefault = false;

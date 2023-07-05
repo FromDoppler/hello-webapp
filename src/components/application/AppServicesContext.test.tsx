@@ -53,7 +53,7 @@ describe(injectAppServices.name, () => {
           {appConfigurationRenderer?.getConfigurationAsJsonString()}
         </pre>
       </code>
-    )
+    ),
   );
 
   it("should inject service with dependencies into a component and do not create other services", () => {
@@ -69,7 +69,7 @@ describe(injectAppServices.name, () => {
     render(
       <AppServicesProvider appServices={appServices}>
         <HocInjectedDemoComponent />
-      </AppServicesProvider>
+      </AppServicesProvider>,
     );
 
     // Assert
@@ -90,7 +90,7 @@ describe(injectAppServices.name, () => {
           <div></div>
         </AppServicesProvider>
         <HocInjectedDemoComponent />
-      </div>
+      </div>,
     );
 
     // Assert
@@ -109,7 +109,7 @@ describe(injectAppServices.name, () => {
         <AppServicesProvider appServices={appServices}>
           <HocInjectedDemoComponent appServices={{} as AppServices} />
         </AppServicesProvider>
-      </div>
+      </div>,
     );
 
     // Assert
@@ -143,7 +143,7 @@ describe(useAppServices.name, () => {
             {...({ appServices: {} as AppServices } as any)}
           />
         </AppServicesProvider>
-      </div>
+      </div>,
     );
 
     // Assert

@@ -27,7 +27,7 @@ export class DummyHtmlEditorApiClient implements HtmlEditorApiClient {
 
   async updateCampaignContent(
     campaignId: string,
-    content: Content
+    content: Content,
   ): Promise<Result> {
     console.log("Begin updateCampaignContent...", {
       campaignId,

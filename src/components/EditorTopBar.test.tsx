@@ -24,7 +24,7 @@ describe(EditorTopBar.name, () => {
         <AppServicesProvider appServices={appServices}>
           <EditorTopBar onSave={() => {}}></EditorTopBar>
         </AppServicesProvider>
-      </TestDopplerIntlProvider>
+      </TestDopplerIntlProvider>,
     );
 
     // Assert
@@ -40,7 +40,7 @@ describe(EditorTopBar.name, () => {
         <AppServicesProvider appServices={appServices}>
           <EditorTopBar onSave={() => {}}></EditorTopBar>
         </AppServicesProvider>
-      </TestDopplerIntlProvider>
+      </TestDopplerIntlProvider>,
     );
 
     expect(screen.getByText("home")).toBeNull;
@@ -62,7 +62,7 @@ describe(EditorTopBar.name, () => {
         <TestDopplerIntlProvider>
           <EditorTopBar onSave={() => {}}></EditorTopBar>
         </TestDopplerIntlProvider>
-      </AppServicesProvider>
+      </AppServicesProvider>,
     );
 
     act(() => screen.getByText("exit_editor").click());
@@ -75,22 +75,22 @@ describe(EditorTopBar.name, () => {
     // Assert
     expect(homeOption.closest("a")).toHaveAttribute(
       "href",
-      appConfiguration.dopplerExternalUrls.home
+      appConfiguration.dopplerExternalUrls.home,
     );
 
     expect(campaignsOption.closest("a")).toHaveAttribute(
       "href",
-      appConfiguration.dopplerExternalUrls.campaigns
+      appConfiguration.dopplerExternalUrls.campaigns,
     );
 
     expect(listsOption.closest("a")).toHaveAttribute(
       "href",
-      appConfiguration.dopplerExternalUrls.lists
+      appConfiguration.dopplerExternalUrls.lists,
     );
 
     expect(controlPanelOption.closest("a")).toHaveAttribute(
       "href",
-      appConfiguration.dopplerExternalUrls.controlPanel
+      appConfiguration.dopplerExternalUrls.controlPanel,
     );
   });
 });

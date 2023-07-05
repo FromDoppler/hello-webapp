@@ -75,7 +75,7 @@ export class SessionMfeAppSessionStateClient
       DOPPLER_SESSION_STATE_UPDATE_EVENT_TYPE,
       () => {
         this.onSessionUpdate();
-      }
+      },
     );
     this.onSessionUpdate();
   }
