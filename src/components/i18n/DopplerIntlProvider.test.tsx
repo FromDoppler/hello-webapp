@@ -58,14 +58,14 @@ describe(DopplerIntlProvider.name, () => {
     ({ sessionState }) => {
       // Arrange
       (useAppSessionUserData as jest.Mock).mockImplementation(
-        () => sessionState
+        () => sessionState,
       );
       const entry = "/campaigns/000";
       // Act
       render(<DopplerIntlProviderTestWrapper initialEntries={[entry]} />);
       // Assert
       screen.getByText(LANG_DEFAULT);
-    }
+    },
   );
 
   it.each([
@@ -84,7 +84,7 @@ describe(DopplerIntlProvider.name, () => {
       render(<DopplerIntlProviderTestWrapper initialEntries={[entry]} />);
       // Assert
       screen.getByText(userLanguage);
-    }
+    },
   );
 
   it(
@@ -93,7 +93,7 @@ describe(DopplerIntlProvider.name, () => {
       " when user don't have lang",
     () => {
       (useAppSessionUserData as jest.Mock).mockImplementation(
-        () => AUTHENTICATED_WITHOUT_LANG
+        () => AUTHENTICATED_WITHOUT_LANG,
       );
       // Arrange
       const entry = "/campaigns/000";
@@ -101,7 +101,7 @@ describe(DopplerIntlProvider.name, () => {
       render(<DopplerIntlProviderTestWrapper initialEntries={[entry]} />);
       // Assert
       screen.getByText(LANG_DEFAULT);
-    }
+    },
   );
 
   it.each([
@@ -111,7 +111,7 @@ describe(DopplerIntlProvider.name, () => {
     "should translate a message to $language when query param lang is $userLanguage",
     ({ userLanguage }) => {
       (useAppSessionUserData as jest.Mock).mockImplementation(
-        () => AUTHENTICATED_WITHOUT_LANG
+        () => AUTHENTICATED_WITHOUT_LANG,
       );
       // Arrange
       const entry = `/campaigns/000?lang=${userLanguage}`;
@@ -119,6 +119,6 @@ describe(DopplerIntlProvider.name, () => {
       render(<DopplerIntlProviderTestWrapper initialEntries={[entry]} />);
       // Assert
       screen.getByText(userLanguage);
-    }
+    },
   );
 });

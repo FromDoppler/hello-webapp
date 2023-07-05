@@ -25,14 +25,14 @@ export const DopplerIntlProvider = ({ children }: DopplerIntlProviderProps) => {
   useEffect(() => {
     if (langQueryParam) {
       setLocale(
-        sanitizeLanguageOrDefault(langQueryParam, Object.keys(messages))
+        sanitizeLanguageOrDefault(langQueryParam, Object.keys(messages)),
       );
     } else if (
       sessionUserData.status === "authenticated" &&
       sessionUserData.lang
     ) {
       setLocale(
-        sanitizeLanguageOrDefault(sessionUserData.lang, Object.keys(messages))
+        sanitizeLanguageOrDefault(sessionUserData.lang, Object.keys(messages)),
       );
     }
   }, [sessionUserData, langQueryParam]);

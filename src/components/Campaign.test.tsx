@@ -55,7 +55,7 @@ const DoubleEditorWithStateLoaded = ({
   const getCampaignContent = () =>
     Promise.resolve({ success: true, value: {} });
   const updateCampaignContent = jest.fn(() =>
-    Promise.resolve({ success: true, value: {} })
+    Promise.resolve({ success: true, value: {} }),
   );
 
   const htmlEditorApiClient = {
@@ -90,7 +90,7 @@ describe(Campaign.name, () => {
       () =>
         new Promise((_, reject) => {
           rejectGetCampaignContentPromise = reject;
-        })
+        }),
     );
 
     const htmlEditorApiClient = {
@@ -111,7 +111,7 @@ describe(Campaign.name, () => {
             </MemoryRouter>
           </TestDopplerIntlProvider>
         </AppServicesProvider>
-      </QueryClientProvider>
+      </QueryClientProvider>,
     );
 
     // Assert
@@ -146,7 +146,7 @@ describe(Campaign.name, () => {
       () =>
         new Promise((resolve) => {
           resolveGetCampaignContentPromise = resolve;
-        })
+        }),
     );
 
     const htmlEditorApiClient = {
@@ -167,7 +167,7 @@ describe(Campaign.name, () => {
             </MemoryRouter>
           </TestDopplerIntlProvider>
         </AppServicesProvider>
-      </QueryClientProvider>
+      </QueryClientProvider>,
     );
 
     // Assert
@@ -199,7 +199,7 @@ describe(Campaign.name, () => {
     const getCampaignContent = () =>
       Promise.resolve({ success: true, value: {} });
     const updateCampaignContent = jest.fn(() =>
-      Promise.resolve({ success: true, value: {} })
+      Promise.resolve({ success: true, value: {} }),
     );
 
     const htmlEditorApiClient = {
@@ -221,7 +221,7 @@ describe(Campaign.name, () => {
             </MemoryRouter>
           </TestDopplerIntlProvider>
         </AppServicesProvider>
-      </QueryClientProvider>
+      </QueryClientProvider>,
     );
 
     // Assert
@@ -232,7 +232,7 @@ describe(Campaign.name, () => {
     await waitFor(() => {
       expect(updateCampaignContent).toHaveBeenCalledWith(
         idCampaign,
-        expect.anything()
+        expect.anything(),
       );
     });
   });
@@ -249,7 +249,7 @@ describe(Campaign.name, () => {
     // Assert
     const buttonByText: HTMLAnchorElement = await screen.findByText(buttonText);
     expect(buttonByText.href).toEqual(
-      baseAppServices.appConfiguration.dopplerExternalUrls.campaigns
+      baseAppServices.appConfiguration.dopplerExternalUrls.campaigns,
     );
   });
 });

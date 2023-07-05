@@ -49,7 +49,7 @@ describe(HtmlEditorApiClientImpl.name, () => {
       const request = jest.fn(() =>
         Promise.resolve({
           data: apiResponse,
-        })
+        }),
       );
 
       const create = jest.fn(() => ({
@@ -124,7 +124,7 @@ describe(HtmlEditorApiClientImpl.name, () => {
       const request = jest.fn(() =>
         Promise.resolve({
           data: apiResponse,
-        })
+        }),
       );
 
       const create = jest.fn(() => ({
@@ -245,7 +245,7 @@ describe(HtmlEditorApiClientImpl.name, () => {
 
         // Assert
         expect(request).not.toBeCalled();
-      }
+      },
     );
   });
 
@@ -285,7 +285,7 @@ describe(HtmlEditorApiClientImpl.name, () => {
       const request = jest.fn(() =>
         Promise.resolve({
           data: {},
-        })
+        }),
       );
 
       const create = jest.fn(() => ({
@@ -356,7 +356,7 @@ describe(HtmlEditorApiClientImpl.name, () => {
       const request = jest.fn(() =>
         Promise.resolve({
           data: {},
-        })
+        }),
       );
 
       const create = jest.fn(() => ({

@@ -155,7 +155,7 @@ the global `window` scope with the name `hello-webapp-configuration`.
 Production's `index.html` example:
 
 ```html
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
   <!-- . . . -->
   <body>
@@ -187,6 +187,6 @@ export const DemoComponent = injectAppServices(
     <code>
       <pre>{JSON.stringify(appConfiguration)}</pre>
     </code>
-  )
+  ),
 );
 ```

@@ -18,7 +18,7 @@ describe(EditorBottomBar.name, () => {
     render(
       <TestDopplerIntlProvider>
         <EditorBottomBar nextUrl={nextUrl} exitUrl={exitUrl}></EditorBottomBar>
-      </TestDopplerIntlProvider>
+      </TestDopplerIntlProvider>,
     );
 
     // Assert
@@ -34,7 +34,7 @@ describe(EditorBottomBar.name, () => {
     render(
       <TestDopplerIntlProvider>
         <EditorBottomBar nextUrl={nextUrl} exitUrl={exitUrl}></EditorBottomBar>
-      </TestDopplerIntlProvider>
+      </TestDopplerIntlProvider>,
     );
 
     // Assert
@@ -57,7 +57,7 @@ describe(EditorBottomBar.name, () => {
             exitUrl={exitUrl}
           ></EditorBottomBar>
         </TestDopplerIntlProvider>
-      </AppServicesProvider>
+      </AppServicesProvider>,
     );
 
     const nextButton = screen.getByText("continue");

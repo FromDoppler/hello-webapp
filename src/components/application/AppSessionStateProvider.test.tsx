@@ -49,7 +49,7 @@ describe("AppSessionStateProvider", () => {
     });
     expect(inspectCurrentSessionUserData().jwtToken).toBeUndefined();
     expect(inspectCurrentSessionUserData().status).toEqual(
-      AUTHENTICATED.status
+      AUTHENTICATED.status,
     );
     expect(inspectCurrentSessionUserData().lang).toEqual(AUTHENTICATED.lang);
   });
@@ -75,11 +75,11 @@ describe("AppSessionStateProvider", () => {
       <>
         <TestComponent />
         <ComponentToInjectCodeBeforeTestComponentUseEffect />
-      </>
+      </>,
     );
 
     expect(inspectCurrentSessionUserData().status).toEqual(
-      AUTHENTICATED.status
+      AUTHENTICATED.status,
     );
     expect(inspectCurrentSessionUserData().lang).toEqual(AUTHENTICATED.lang);
   });
@@ -98,7 +98,7 @@ describe("AppSessionStateProvider", () => {
 
     const ComponentToInjectCodeBeforeTestComponentUseEffect = () => {
       expect(inspectCurrentSessionUserData().status).toEqual(
-        AUTHENTICATED.status
+        AUTHENTICATED.status,
       );
       expect(inspectCurrentSessionUserData().lang).toEqual(AUTHENTICATED.lang);
       return <></>;
@@ -108,7 +108,7 @@ describe("AppSessionStateProvider", () => {
       <>
         <TestComponent />
         <ComponentToInjectCodeBeforeTestComponentUseEffect />
-      </>
+      </>,
     );
   });
 });

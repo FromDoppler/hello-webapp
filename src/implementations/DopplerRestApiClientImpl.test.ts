@@ -84,7 +84,7 @@ describe(DopplerRestApiClientImpl.name, () => {
       const request = jest.fn(() =>
         Promise.resolve({
           data: apiResponse,
-        })
+        }),
       );
 
       const create = jest.fn(() => ({
@@ -212,7 +212,7 @@ describe(DopplerRestApiClientImpl.name, () => {
 
         // Assert
         expect(request).not.toBeCalled();
-      }
+      },
     );
   });
 });

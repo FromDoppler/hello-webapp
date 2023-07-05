@@ -20,7 +20,7 @@ describe(RequireAuth.name, () => {
             <p>{privateText}</p>
           </RequireAuth>
         </AppSessionStateContext.Provider>
-      </AppServicesProvider>
+      </AppServicesProvider>,
     );
     // Assert
     const expectedTextEl = screen.queryByTestId("loading-page");
@@ -51,7 +51,7 @@ describe(RequireAuth.name, () => {
             <p>{expectedText}</p>
           </RequireAuth>
         </AppSessionStateContext.Provider>
-      </AppServicesProvider>
+      </AppServicesProvider>,
     );
 
     // Assert
@@ -84,7 +84,7 @@ describe(RequireAuth.name, () => {
             <p>{privateText}</p>
           </RequireAuth>
         </AppSessionStateContext.Provider>
-      </AppServicesProvider>
+      </AppServicesProvider>,
     );
 
     // Assert

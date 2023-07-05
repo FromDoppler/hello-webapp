@@ -8,7 +8,7 @@ const messages = Object.keys(flattenMessages(messages_en)).reduce(
     ...accumulator,
     [currentValue]: currentValue,
   }),
-  {}
+  {},
 );
 
 export const TestDopplerIntlProvider = ({

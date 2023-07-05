@@ -22,7 +22,7 @@ appSessionStateMonitor.start();
 const queryClient = new QueryClient();
 
 const container = document.getElementById(
-  appServices.appConfiguration.appElementId
+  appServices.appConfiguration.appElementId,
 );
 
 const root = createRoot(container!);
@@ -39,7 +39,7 @@ root.render(
         </AppServicesProvider>
       </BrowserRouter>
     </QueryClientProvider>
-  </StrictMode>
+  </StrictMode>,
 );
 
 // If you want to start measuring performance in your app, pass a function

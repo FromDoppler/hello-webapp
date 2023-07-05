@@ -13,7 +13,7 @@ import { DummyDopplerRestApiClient } from "./implementations/dummies/doppler-res
 import { DopplerRestApiClientImpl } from "./implementations/DopplerRestApiClientImpl";
 
 export const configureApp = (
-  customConfiguration: Partial<AppConfiguration>
+  customConfiguration: Partial<AppConfiguration>,
 ): AppServices => {
   const appConfiguration = {
     ...defaultAppConfiguration,
