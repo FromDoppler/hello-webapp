@@ -15,7 +15,7 @@
     "@types/history": "5.0.0",
     "@types/jest": "29.5.14",
     "@types/node": "20.17.10",
-    "@types/react": "18.3.17",
+    "@types/react": "18.3.18",
     "@types/react-dom": "18.3.5",
     "@types/react-router-dom": "5.3.3",
     "axios": "1.7.2",
