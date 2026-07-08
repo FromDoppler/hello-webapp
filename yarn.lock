@@ -1860,10 +1860,10 @@
   resolved "https://registry.yarnpkg.com/@types/node/-/node-18.0.0.tgz#67c7b724e1bcdd7a8821ce0d5ee184d3b4dd525a"
   integrity sha512-cHlGmko4gWLVI27cGJntjs/Sj8th9aYwplmZFwmmgYQQvL5NUsgVJG7OddLvNfLqYS31KFN0s3qlaD9qCaxACA==
 
-"@types/node@22.20.0":
-  version "22.20.0"
-  resolved "https://registry.yarnpkg.com/@types/node/-/node-22.20.0.tgz#431f5007396bc1a1a47b9c7df60f3e5e0b5b7304"
-  integrity sha512-QWlFW2wf3nTjC13/DqRnBpR4ZO36VJH/JVBkA/vcnmbTBNQIlnObqyqZE1tUR7+Ni23Lda8R1BxMfbXRpCUx5g==
+"@types/node@22.20.1":
+  version "22.20.1"
+  resolved "https://registry.yarnpkg.com/@types/node/-/node-22.20.1.tgz#84e7cdf63cdaa20c134aa317ccc901aa21e16f0e"
+  integrity sha512-EANqOCF9QFyra+4pfxUcX9STKJpCLjMbObVzljIJomAWSnuSIEAvyzEU53GaajbXJEgdh0iEcPL+DGvpUd4k1Q==
   dependencies:
     undici-types "~6.21.0"
 
