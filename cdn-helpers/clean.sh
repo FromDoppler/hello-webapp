@@ -126,6 +126,7 @@ mkdir -p "${manifestDir}"
 : > "${deletableAssets}"
 
 echo "Starting CDN cleanup for ${environment} at ${remotePath}..."
+echo "Downloading CDN manifests required for ${environment} cleanup..."
 
 cat > "${downloadBatch}" <<EOF
 lcd ${manifestDir}
@@ -146,6 +147,9 @@ sftp -P "${port}" -b "${downloadBatch}" "${remoteUserAndHost}" >/dev/null
 
 find "${manifestDir}" -maxdepth 1 -type f -name 'asset-manifest-*.json' -exec basename {} \; \
   | sort > "${allManifests}"
+
+downloadedManifestsCount="$(wc -l < "${allManifests}" | tr -d ' ')"
+echo "Downloaded ${downloadedManifestsCount} CDN manifests for analysis."
 
 if [ ! -s "${allManifests}" ]
 then
@@ -182,6 +186,9 @@ then
   exit 0
 fi
 
+manifestsToDeleteCount="$(wc -l < "${deleteManifests}" | tr -d ' ')"
+echo "Found ${manifestsToDeleteCount} old CDN manifests for ${environment}."
+
 extract_manifest_assets () {
   manifest="$1"
 
@@ -207,6 +214,13 @@ sort -u "${protectedAssets}" -o "${protectedAssets}"
 
 grep -F -x -v -f "${protectedAssets}" "${candidateAssets}" > "${deletableAssets}" || true
 
+candidateAssetsCount="$(wc -l < "${candidateAssets}" | tr -d ' ')"
+protectedAssetsCount="$(wc -l < "${protectedAssets}" | tr -d ' ')"
+deletableAssetsCount="$(wc -l < "${deletableAssets}" | tr -d ' ')"
+
+echo "Found ${candidateAssetsCount} candidate assets; ${protectedAssetsCount} assets are protected."
+echo "Deleting ${manifestsToDeleteCount} manifests and ${deletableAssetsCount} unreferenced assets..."
+
 {
   printf 'cd %s\n' "${remotePath}"
 
@@ -227,8 +241,5 @@ grep -F -x -v -f "${protectedAssets}" "${candidateAssets}" > "${deletableAssets}
 
 sftp -P "${port}" -b "${deleteBatch}" "${remoteUserAndHost}" >/dev/null
 
-deletedAssetsCount="$(wc -l < "${deletableAssets}" | tr -d ' ')"
-deletedManifestsCount="$(wc -l < "${deleteManifests}" | tr -d ' ')"
-
-echo "Deleted ${deletedManifestsCount} old CDN manifests and ${deletedAssetsCount} unreferenced manifest assets for ${environment}."
+echo "Deleted ${manifestsToDeleteCount} old CDN manifests and ${deletableAssetsCount} unreferenced manifest assets for ${environment}."
 echo "Finished CDN cleanup for ${environment}."
