@@ -102,6 +102,8 @@ cd "$(dirname "$0")"
 export MSYS_NO_PATHCONV=1
 export MSYS2_ARG_CONV_EXCL="*"
 
+echo "Starting CDN cleanup for ${environment} at ${destination#*:}..."
+
 ssh -p "${port}" "${destination%:*}" "sh -s -- '${destination#*:}' '${environment}' '${keepDays}'" <<'REMOTE_SCRIPT'
 set -e
 set -u
@@ -111,6 +113,8 @@ CDN_CLEAN_ENVIRONMENT="$2"
 CDN_CLEAN_KEEP_DAYS="$3"
 
 cd "${CDN_CLEAN_PATH}"
+
+echo "Scanning CDN manifests in ${CDN_CLEAN_PATH} for ${CDN_CLEAN_ENVIRONMENT} cleanup..."
 
 tmpDir="$(mktemp -d)"
 trap 'rm -rf "${tmpDir}"' EXIT
@@ -219,3 +223,5 @@ done < "${deleteManifests}"
 
 echo "Deleted ${deletedManifestsCount} old CDN manifests and ${deletedAssetsCount} unreferenced manifest assets for ${CDN_CLEAN_ENVIRONMENT}."
 REMOTE_SCRIPT
+
+echo "Finished CDN cleanup for ${environment}."
