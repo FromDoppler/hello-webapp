@@ -102,35 +102,12 @@ cd "$(dirname "$0")"
 export MSYS_NO_PATHCONV=1
 export MSYS2_ARG_CONV_EXCL="*"
 
-echo "Starting CDN cleanup for ${environment} at ${destination#*:}..."
-
-quote_for_remote_shell () {
-  printf "'%s'" "$(printf "%s" "$1" | sed "s/'/'\\\\''/g")"
-}
-
-localRemoteScript="$(mktemp)"
-remoteBasePath="${destination#*:}"
-remoteScript="${remoteBasePath%/}/.hello-webapp-cdn-clean-$$.sh"
-trap 'rm -f "${localRemoteScript}"' EXIT
-
-cat > "${localRemoteScript}" <<'REMOTE_SCRIPT'
-set -e
-set -u
-
-CDN_CLEAN_PATH="$1"
-CDN_CLEAN_ENVIRONMENT="$2"
-CDN_CLEAN_KEEP_DAYS="$3"
-CDN_CLEAN_SCRIPT="$4"
-
-trap 'rm -f "${CDN_CLEAN_SCRIPT}"' EXIT
-
-cd "${CDN_CLEAN_PATH}"
-
-echo "Scanning CDN manifests in ${CDN_CLEAN_PATH} for ${CDN_CLEAN_ENVIRONMENT} cleanup..."
-
+remoteUserAndHost="${destination%:*}"
+remotePath="${destination#*:}"
 tmpDir="$(mktemp -d)"
-trap 'rm -rf "${tmpDir}"' EXIT
-
+manifestDir="${tmpDir}/manifests"
+downloadBatch="${tmpDir}/download.batch"
+deleteBatch="${tmpDir}/delete.batch"
 allManifests="${tmpDir}/all-manifests"
 deleteManifests="${tmpDir}/delete-manifests"
 keepManifests="${tmpDir}/keep-manifests"
@@ -138,30 +115,47 @@ candidateAssets="${tmpDir}/candidate-assets"
 protectedAssets="${tmpDir}/protected-assets"
 deletableAssets="${tmpDir}/deletable-assets"
 
+trap 'rm -rf "${tmpDir}"' EXIT
+
+mkdir -p "${manifestDir}"
+
 : > "${allManifests}"
 : > "${deleteManifests}"
 : > "${candidateAssets}"
 : > "${protectedAssets}"
 : > "${deletableAssets}"
 
-find . -maxdepth 1 -type f -name 'asset-manifest-*.json' -print \
-  | sed 's#^\./##' \
+echo "Starting CDN cleanup for ${environment} at ${remotePath}..."
+
+cat > "${downloadBatch}" <<EOF
+lcd ${manifestDir}
+cd ${remotePath}
+mget -p asset-manifest-*.json
+EOF
+
+sftp -P "${port}" -b "${downloadBatch}" "${remoteUserAndHost}" >/dev/null
+
+find "${manifestDir}" -maxdepth 1 -type f -name 'asset-manifest-*.json' -exec basename {} \; \
   | sort > "${allManifests}"
 
-if [ "${CDN_CLEAN_ENVIRONMENT}" = "pr" ]
+if [ ! -s "${allManifests}" ]
 then
-  find . -maxdepth 1 -type f -name 'asset-manifest-pr-*.json' -mtime +"${CDN_CLEAN_KEEP_DAYS}" -print \
-    | sed 's#^\./##' \
+  echo "No CDN manifests found."
+  exit 0
+fi
+
+if [ "${environment}" = "pr" ]
+then
+  find "${manifestDir}" -maxdepth 1 -type f -name 'asset-manifest-pr-*.json' -mtime +"${keepDays}" \
+    -exec basename {} \; \
     | sort > "${deleteManifests}"
 else
   latestEnvironmentManifest="$(
-    ls -t "asset-manifest-${CDN_CLEAN_ENVIRONMENT}"-*.json 2>/dev/null \
-      | sed -n '1p'
+    ls -t "${manifestDir}/asset-manifest-${environment}"-*.json 2>/dev/null \
+      | sed -n '1s#.*/##p'
   )"
 
-  find . -maxdepth 1 -type f -name "asset-manifest-${CDN_CLEAN_ENVIRONMENT}-*.json" -print \
-    | sed 's#^\./##' \
-    | sort \
+  grep -E "^asset-manifest-${environment}-.*\\.json$" "${allManifests}" \
     | while IFS= read -r manifest
       do
         if [ "${manifest}" != "${latestEnvironmentManifest}" ]
@@ -173,20 +167,14 @@ fi
 
 if [ ! -s "${deleteManifests}" ]
 then
-  echo "No old CDN manifests found for ${CDN_CLEAN_ENVIRONMENT}."
+  echo "No old CDN manifests found for ${environment}."
   exit 0
 fi
 
 extract_manifest_assets () {
   manifest="$1"
 
-  if command -v jq >/dev/null 2>&1
-  then
-    jq -r '.files | values[]?' "${manifest}"
-  else
-    sed -n 's#.*\(static/\(css\|js\)/[^"]*\).*#\1#p' "${manifest}"
-  fi \
-    | sed -n 's#^.*\(static/\(css\|js\)/[^?#]*\).*$#\1#p' \
+  sed -n 's#.*\(static/\(css\|js\)/[^"?]*\).*$#\1#p' "${manifest}" \
     | sort -u
 }
 
@@ -194,14 +182,12 @@ grep -F -x -v -f "${deleteManifests}" "${allManifests}" > "${keepManifests}" || 
 
 while IFS= read -r manifest
 do
-  [ -f "${manifest}" ] || continue
-  extract_manifest_assets "${manifest}" >> "${candidateAssets}"
+  extract_manifest_assets "${manifestDir}/${manifest}" >> "${candidateAssets}"
 done < "${deleteManifests}"
 
 while IFS= read -r manifest
 do
-  [ -f "${manifest}" ] || continue
-  extract_manifest_assets "${manifest}" >> "${protectedAssets}"
+  extract_manifest_assets "${manifestDir}/${manifest}" >> "${protectedAssets}"
 done < "${keepManifests}"
 
 sort -u "${candidateAssets}" -o "${candidateAssets}"
@@ -209,45 +195,28 @@ sort -u "${protectedAssets}" -o "${protectedAssets}"
 
 grep -F -x -v -f "${protectedAssets}" "${candidateAssets}" > "${deletableAssets}" || true
 
-deletedAssetsCount=0
-while IFS= read -r asset
-do
-  case "${asset}" in
-    static/css/*|static/js/*)
-      if [ -f "${asset}" ]
-      then
-        rm -f "${asset}"
-        deletedAssetsCount=$((deletedAssetsCount + 1))
-      fi
-      ;;
-  esac
-done < "${deletableAssets}"
+{
+  printf 'cd %s\n' "${remotePath}"
 
-deletedManifestsCount=0
-while IFS= read -r manifest
-do
-  if [ -f "${manifest}" ]
-  then
-    rm -f "${manifest}"
-    deletedManifestsCount=$((deletedManifestsCount + 1))
-  fi
-done < "${deleteManifests}"
+  while IFS= read -r asset
+  do
+    case "${asset}" in
+      static/css/*|static/js/*)
+        printf -- '-rm %s\n' "${asset}"
+        ;;
+    esac
+  done < "${deletableAssets}"
 
-echo "Deleted ${deletedManifestsCount} old CDN manifests and ${deletedAssetsCount} unreferenced manifest assets for ${CDN_CLEAN_ENVIRONMENT}."
-REMOTE_SCRIPT
+  while IFS= read -r manifest
+  do
+    printf -- '-rm %s\n' "${manifest}"
+  done < "${deleteManifests}"
+} > "${deleteBatch}"
 
-scp -P "${port}" "${localRemoteScript}" "${destination%:*}:${remoteScript}"
+sftp -P "${port}" -b "${deleteBatch}" "${remoteUserAndHost}" >/dev/null
 
-remoteScriptArgument="$(quote_for_remote_shell "${remoteScript}")"
-remotePathArgument="$(quote_for_remote_shell "${destination#*:}")"
-remoteEnvironmentArgument="$(quote_for_remote_shell "${environment}")"
-remoteKeepDaysArgument="$(quote_for_remote_shell "${keepDays}")"
+deletedAssetsCount="$(wc -l < "${deletableAssets}" | tr -d ' ')"
+deletedManifestsCount="$(wc -l < "${deleteManifests}" | tr -d ' ')"
 
-ssh -p "${port}" "${destination%:*}" "\
-  sh ${remoteScriptArgument} \
-    ${remotePathArgument} \
-    ${remoteEnvironmentArgument} \
-    ${remoteKeepDaysArgument} \
-    ${remoteScriptArgument}"
-
+echo "Deleted ${deletedManifestsCount} old CDN manifests and ${deletedAssetsCount} unreferenced manifest assets for ${environment}."
 echo "Finished CDN cleanup for ${environment}."
