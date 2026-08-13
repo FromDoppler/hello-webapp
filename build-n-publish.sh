@@ -128,11 +128,14 @@ docker run --rm \
   -v /var/lib/jenkins/.ssh:/root/.ssh:ro \
   "${tag}" \
   /bin/sh -c "\
+    echo 'Preparing CDN files...' \
+    && \
     sh ./prepare.sh \
       --commit=\"${commit}\" \
       --name=\"${name}\" \
       --version=\"${version}\" \
       --pre-version-suffix=\"${versionPre}\" \
+    && echo 'Uploading CDN files...' \
     && sh ./upload.sh \
       --port=\"${CDN_SFTP_PORT}\" \
       --destination=\"${CDN_SFTP_USERNAME}@${CDN_SFTP_HOSTNAME}:/${CDN_SFTP_BASE}/${pkgName}/\" \
@@ -143,10 +146,13 @@ docker run --rm \
         else \
           environmentToClean=\"${name}\"; \
         fi; \
+        echo \"Cleaning old CDN files for \${environmentToClean}...\"; \
         sh ./clean.sh \
           --port=\"${CDN_SFTP_PORT}\" \
           --destination=\"${CDN_SFTP_USERNAME}@${CDN_SFTP_HOSTNAME}:/${CDN_SFTP_BASE}/${pkgName}/\" \
           --environment=\"\${environmentToClean}\"; \
+      else \
+        echo 'Skipping CDN cleanup for versioned release.'; \
       fi; \
     ) \
     "
