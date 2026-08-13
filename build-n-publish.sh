@@ -6,6 +6,7 @@ commit=""
 name=""
 version=""
 versionPre=""
+skipClean=""
 
 print_help () {
     echo ""
@@ -20,6 +21,7 @@ print_help () {
     echo "  -n, --name, version name"
     echo "  -v, --version, version number"
     echo "  -s, --pre-version-suffix (optional, only with version)"
+    echo "  --skip-clean, skip CDN cleanup after upload"
     echo "  -h, --help"
     echo "Only one of name or version parameters is required, and cannot be included together."
     echo
@@ -29,6 +31,7 @@ print_help () {
     echo "  sh build-n-publish.sh -c=94f85efb9c3689f409104ef7cde6813652ca59fb -v=v12.34.5"
     echo "  sh build-n-publish.sh -c=94f85efb9c3689f409104ef7cde6813652ca59fb -v=v12.34.5 -s=beta1"
     echo "  sh build-n-publish.sh -c=94f85efb9c3689f409104ef7cde6813652ca59fb -v=v12.34.5 -s=pr123"
+    echo "  sh build-n-publish.sh -c=94f85efb9c3689f409104ef7cde6813652ca59fb -n=INT --skip-clean"
 }
 
 for i in "$@" ; do
@@ -50,6 +53,9 @@ case $i in
     ;;
     -s=*|--pre-version-suffix=*)
     versionPre="${i#*=}"
+    ;;
+    --skip-clean)
+    skipClean="true"
     ;;
     -h|--help)
     print_help
@@ -128,12 +134,33 @@ docker run --rm \
   -v /var/lib/jenkins/.ssh:/root/.ssh:ro \
   "${tag}" \
   /bin/sh -c "\
+    echo 'Preparing CDN files...' \
+    && \
     sh ./prepare.sh \
       --commit=\"${commit}\" \
       --name=\"${name}\" \
       --version=\"${version}\" \
       --pre-version-suffix=\"${versionPre}\" \
+    && echo 'Uploading CDN files...' \
     && sh ./upload.sh \
       --port=\"${CDN_SFTP_PORT}\" \
       --destination=\"${CDN_SFTP_USERNAME}@${CDN_SFTP_HOSTNAME}:/${CDN_SFTP_BASE}/${pkgName}/\" \
+    && ( \
+      if [ -n \"${skipClean}\" ]; then \
+        echo 'Skipping CDN cleanup because --skip-clean was provided.'; \
+      elif [ -n \"${name}\" ]; then \
+        if echo \"${name}\" | grep -q '^pr-'; then \
+          environmentToClean='pr'; \
+        else \
+          environmentToClean=\"${name}\"; \
+        fi; \
+        echo \"Cleaning old CDN files for \${environmentToClean}...\"; \
+        sh ./clean.sh \
+          --port=\"${CDN_SFTP_PORT}\" \
+          --destination=\"${CDN_SFTP_USERNAME}@${CDN_SFTP_HOSTNAME}:/${CDN_SFTP_BASE}/${pkgName}/\" \
+          --environment=\"\${environmentToClean}\"; \
+      else \
+        echo 'Skipping CDN cleanup for versioned release.'; \
+      fi; \
+    ) \
     "
