@@ -104,13 +104,25 @@ export MSYS2_ARG_CONV_EXCL="*"
 
 echo "Starting CDN cleanup for ${environment} at ${destination#*:}..."
 
-ssh -p "${port}" "${destination%:*}" "sh -s -- '${destination#*:}' '${environment}' '${keepDays}'" <<'REMOTE_SCRIPT'
+quote_for_remote_shell () {
+  printf "'%s'" "$(printf "%s" "$1" | sed "s/'/'\\\\''/g")"
+}
+
+localRemoteScript="$(mktemp)"
+remoteBasePath="${destination#*:}"
+remoteScript="${remoteBasePath%/}/.hello-webapp-cdn-clean-$$.sh"
+trap 'rm -f "${localRemoteScript}"' EXIT
+
+cat > "${localRemoteScript}" <<'REMOTE_SCRIPT'
 set -e
 set -u
 
 CDN_CLEAN_PATH="$1"
 CDN_CLEAN_ENVIRONMENT="$2"
 CDN_CLEAN_KEEP_DAYS="$3"
+CDN_CLEAN_SCRIPT="$4"
+
+trap 'rm -f "${CDN_CLEAN_SCRIPT}"' EXIT
 
 cd "${CDN_CLEAN_PATH}"
 
@@ -223,5 +235,19 @@ done < "${deleteManifests}"
 
 echo "Deleted ${deletedManifestsCount} old CDN manifests and ${deletedAssetsCount} unreferenced manifest assets for ${CDN_CLEAN_ENVIRONMENT}."
 REMOTE_SCRIPT
+
+scp -P "${port}" "${localRemoteScript}" "${destination%:*}:${remoteScript}"
+
+remoteScriptArgument="$(quote_for_remote_shell "${remoteScript}")"
+remotePathArgument="$(quote_for_remote_shell "${destination#*:}")"
+remoteEnvironmentArgument="$(quote_for_remote_shell "${environment}")"
+remoteKeepDaysArgument="$(quote_for_remote_shell "${keepDays}")"
+
+ssh -p "${port}" "${destination%:*}" "\
+  sh ${remoteScriptArgument} \
+    ${remotePathArgument} \
+    ${remoteEnvironmentArgument} \
+    ${remoteKeepDaysArgument} \
+    ${remoteScriptArgument}"
 
 echo "Finished CDN cleanup for ${environment}."
