@@ -130,8 +130,17 @@ echo "Starting CDN cleanup for ${environment} at ${remotePath}..."
 cat > "${downloadBatch}" <<EOF
 lcd ${manifestDir}
 cd ${remotePath}
-mget -p asset-manifest-*.json
+mget -p asset-manifest-main.json
+mget -p asset-manifest-INT.json
+mget -p asset-manifest-v*.json
 EOF
+
+if [ "${environment}" = "pr" ]
+then
+  printf '%s\n' 'mget -p asset-manifest-pr-*.json' >> "${downloadBatch}"
+else
+  printf 'mget -p asset-manifest-%s-*.json\n' "${environment}" >> "${downloadBatch}"
+fi
 
 sftp -P "${port}" -b "${downloadBatch}" "${remoteUserAndHost}" >/dev/null
 
