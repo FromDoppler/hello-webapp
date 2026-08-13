@@ -160,8 +160,10 @@ then
     | sort > "${deleteManifests}"
 else
   latestEnvironmentManifest="$(
-    ls -t "${manifestDir}/asset-manifest-${environment}"-*.json 2>/dev/null \
-      | sed -n '1s#.*/##p'
+    find "${manifestDir}" -maxdepth 1 -type f -name "asset-manifest-${environment}-*.json" \
+      -printf '%T@ %f\n' \
+      | sort -rn \
+      | sed -n '1s#^[^ ]* ##p'
   )"
 
   grep -E "^asset-manifest-${environment}-.*\\.json$" "${allManifests}" \
