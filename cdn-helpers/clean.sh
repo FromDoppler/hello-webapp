@@ -178,7 +178,8 @@ extract_manifest_assets () {
     | sort -u
 }
 
-grep -F -x -v -f "${deleteManifests}" "${allManifests}" > "${keepManifests}" || true
+grep -E '^(asset-manifest-(main|INT)\.json|asset-manifest-v.*\.json)$' "${allManifests}" \
+  > "${keepManifests}" || true
 
 while IFS= read -r manifest
 do
