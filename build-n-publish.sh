@@ -136,4 +136,17 @@ docker run --rm \
     && sh ./upload.sh \
       --port=\"${CDN_SFTP_PORT}\" \
       --destination=\"${CDN_SFTP_USERNAME}@${CDN_SFTP_HOSTNAME}:/${CDN_SFTP_BASE}/${pkgName}/\" \
+    && ( \
+      if [ -n \"${name}\" ]; then \
+        if echo \"${name}\" | grep -q '^pr-'; then \
+          environmentToClean='pr'; \
+        else \
+          environmentToClean=\"${name}\"; \
+        fi; \
+        sh ./clean.sh \
+          --port=\"${CDN_SFTP_PORT}\" \
+          --destination=\"${CDN_SFTP_USERNAME}@${CDN_SFTP_HOSTNAME}:/${CDN_SFTP_BASE}/${pkgName}/\" \
+          --environment=\"\${environmentToClean}\"; \
+      fi; \
+    ) \
     "
